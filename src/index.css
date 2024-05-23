@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .defaultBg {
+        @apply bg-white;
+    }
+    .borderBottom {
+        @apply border-b-2 border-black;
+    }
+    .themeBorder {
+        @apply border-2 border-black;
+    }
+    .field {
+        @apply defaultBg themeBorder p-3;
+    }
+    .alignIcon {
+        @apply flex items-center gap-x-3 justify-between;
+    }
+    .itemWrapper {
+        @apply rounded-default themeBorder defaultBg  shadow-listItem;
+    }
+    .shadowBorder {
+        box-shadow: #fff -5px 5px 0 0, #000 -5px 5px 0px 2px;
+    }
+}
