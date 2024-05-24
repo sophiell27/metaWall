@@ -7,20 +7,16 @@ import WallMain from './components/Wall/WallMain.tsx';
 import Wall from './components/Wall/Wall.tsx';
 
 function App() {
-    return (
-        // <>
-        //   <Header />
-        //   <Wall />
-        // </>
-        <Routes>
-            <Route path='/' element={<Layout />}>
-                <Route path='' element={<WallMain />}>
-                    <Route path='' element={<Wall />} />
-                    <Route path='newPost' element={<CreatePost />} />
-                </Route>
-            </Route>
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path='/metaWall-w4' element={<Layout />}>
+        <Route path='' element={<WallMain />}>
+          <Route path='' element={<Wall />} />
+          <Route path='newPost' element={<CreatePost />} />
+        </Route>
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;

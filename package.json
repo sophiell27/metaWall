@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://sophiell27.github.io/metaWall-w4/",
+  "homepage": "https://sophiell27.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
