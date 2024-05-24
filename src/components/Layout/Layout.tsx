@@ -3,13 +3,13 @@ import Header from './Header';
 import WallWrapper from './WallWrapper';
 
 const Layout = () => {
-    return (
-        <>
-            <Header />
-            <WallWrapper>
-                <Outlet />
-            </WallWrapper>
-        </>
-    );
+  return (
+    <>
+      <Header />
+      <WallWrapper>
+        <Outlet />
+      </WallWrapper>
+    </>
+  );
 };
 export default Layout;
