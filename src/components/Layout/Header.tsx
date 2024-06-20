@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import Avatar from '../Wall/components/Avatar';
-import Photo from '../Wall/components/Photo';
+import Avatar from '../WallView/components/Avatar';
+import Photo from '../WallView/components/Photo';
 
 const Header = () => {
   const user = {
