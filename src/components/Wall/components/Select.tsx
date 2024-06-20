@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { FaChevronDown, FaCheck } from 'react-icons/fa';
-
-const Select = ({
-  handleSelect,
-}: {
-  handleSelect?: (index: number) => void;
-}) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+interface ISelect {
+  handleSelect: (index: number) => void;
+  selectedIndex: number;
+  options: string[];
+}
+const Select = ({ handleSelect, selectedIndex, options }: ISelect) => {
   const [isExpand, setIsExpand] = useState(false);
-  const options = ['最新貼文', '最舊貼文'];
+
   return (
     <div className='flex-1'>
       <div className='flex flex-col relative'>
@@ -27,8 +26,8 @@ const Select = ({
                 key={option}
                 className='alignIcon w-full'
                 onClick={() => {
-                  setSelectedIndex(index);
-                  handleSelect && handleSelect(index);
+                  // setSelectedIndex(index);
+                  handleSelect(index);
                   setIsExpand(false);
                 }}
               >
