@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 interface ISearch {
@@ -6,14 +5,11 @@ interface ISearch {
   setValue: (value: string) => void;
 }
 const Search = ({ value, setValue }: ISearch) => {
-  //   const [inputText, setInputText] = useState('');
   return (
     <div className='flex themeBorder'>
       <input
         type='text'
         className='defaultBg p-3 w-full'
-        // onChange={(e) => setInputText(e.target.value)}
-        // value={inputText}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder='搜尋貼文'
