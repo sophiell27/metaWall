@@ -40,7 +40,7 @@ const SignupPage = () => {
         <img src={loginImage} alt='' />
         <div className=''>
           <h1 className='text-60px text-navy font-extrabold'>MetaWall</h1>
-          <h3 className='mb-9 font-bold'>到元宇宙展開全新社交圈</h3>
+          <h3 className='mb-9 font-bold'>註冊</h3>
           <div className='flex flex-col gap-y-4 mb-8'>
             <InputField
               type='text'
