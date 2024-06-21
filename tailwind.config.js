@@ -13,6 +13,7 @@ export default {
         darkGrey: '#707070',
         //blue
         babyBlue: '#E2EDFA',
+        fogBlue: '#A8B0B9',
         navy: '#03438D',
         grass: '#83C51D',
         gold: '#FAA722',
@@ -23,6 +24,7 @@ export default {
         '30px': '30px',
         '46px': '46px',
         '50px': '50px',
+        '72px': '72px',
       },
       boxShadow: {
         listItem: '0 3px 0 rgba(0, 0, 0, 1)',
@@ -30,6 +32,14 @@ export default {
       },
       borderRadius: {
         default: '10px',
+      },
+      fontSize: {
+        '60px': [
+          '60px',
+          {
+            lineHeight: '84px',
+          },
+        ],
       },
     },
   },

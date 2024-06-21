@@ -6,7 +6,7 @@ const LayoutPage = () => {
   return (
     <>
       <Header />
-      <WallWrapper>
+      <WallWrapper classname='pt-12'>
         <Outlet />
       </WallWrapper>
     </>

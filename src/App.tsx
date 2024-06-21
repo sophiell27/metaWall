@@ -1,21 +1,23 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import CreatePost from './pages/WallMainPage/CreatePostPage.tsx';
-import WallMainView from './pages/WallMainPage/WallMainPage.tsx';
-import Wall from './pages/WallMainPage/WallPage.tsx';
-import LoginView from './pages/LoginPage/LoginPage.tsx';
-import LayoutPage from './pages/LayoutPage/LayoutPage.tsx';
+import LayoutPage from './pages/LayoutPage/LayoutPage';
+import WallMainPage from './pages/WallMainPage/WallMainPage';
+import WallPage from './pages/WallMainPage/WallPage';
+import CreatePostPage from './pages/WallMainPage/CreatePostPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import SignupPage from './pages/SignupPage/SignupPage';
 
 function App() {
   return (
     <Routes>
       <Route path='/metaWall' element={<LayoutPage />}>
-        <Route path='' element={<WallMainView />}>
-          <Route path='' element={<Wall />} />
-          <Route path='newPost' element={<CreatePost />} />
+        <Route path='' element={<WallMainPage />}>
+          <Route path='' element={<WallPage />} />
+          <Route path='newPost' element={<CreatePostPage />} />
         </Route>
       </Route>
-      <Route path='/metaWall/login' element={<LoginView />}></Route>
+      <Route path='/metaWall/login' element={<LoginPage />} />
+      <Route path='/metaWall/signup' element={<SignupPage />} />
     </Routes>
   );
 }
