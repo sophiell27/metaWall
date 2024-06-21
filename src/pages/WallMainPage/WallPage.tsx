@@ -1,12 +1,12 @@
-import Select from './components/Select';
-import Search from './components/Search';
-import EmptyList from './components/EmptyList';
-import ListItem from './components/ListItem';
+import EmptyList from '../../components/EmptyList';
+import ListItem from '../../components/ListItem';
+import Search from '../../components/Search';
+import Select from '../../components/Select';
 import usePosts from '../../reactQuery/hooks/post/usePosts';
 import { useState } from 'react';
 
 const OPTIONS = ['最新貼文', '最舊貼文'];
-const Wall = () => {
+const WallPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [keyword, setKeyWord] = useState('');
 
@@ -36,4 +36,4 @@ const Wall = () => {
   );
 };
 
-export default Wall;
+export default WallPage;

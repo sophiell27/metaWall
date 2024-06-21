@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import WallWrapper from './WallWrapper';
+import WallWrapper from '../../components/WallWrapper';
 
-const Layout = () => {
+const LayoutPage = () => {
   return (
     <>
       <Header />
@@ -12,4 +12,4 @@ const Layout = () => {
     </>
   );
 };
-export default Layout;
+export default LayoutPage;

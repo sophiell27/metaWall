@@ -1,8 +1,8 @@
 import { FaRegThumbsUp, FaRegBell } from 'react-icons/fa';
 import Avatar from './Avatar';
 import Photo from './Photo';
-import useUser from '../../../reactQuery/hooks/user/useUser';
 import { Link } from 'react-router-dom';
+import useUser from '../reactQuery/hooks/user/useUser';
 const SideMenu = () => {
   const { data } = useUser();
 
@@ -25,7 +25,7 @@ const SideMenu = () => {
   ];
   return (
     <div className='py-8 px-6 themeBorder bg-white'>
-      <Link to='/metaWall-w4/newPost'>
+      <Link to='/metaWall/newPost'>
         <button className='w-full bg-navy text-white py-4 rounded-default shadow-button ml-[2.5px] mb-6'>
           張貼動態
         </button>
