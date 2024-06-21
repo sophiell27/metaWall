@@ -1,10 +1,12 @@
 import { ChangeEvent } from 'react';
+import InputLabel from './InputLabel';
 
 interface IInputField {
-  type: string;
+  type?: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   value: string | number;
-  placeholder: string | undefined;
+  placeholder?: string | undefined;
+  label?: string;
   errorMessage?: string;
 }
 
@@ -12,11 +14,13 @@ const InputField = ({
   type = 'text',
   onChange,
   value,
-  placeholder,
+  placeholder = '',
+  label,
   errorMessage,
 }: IInputField) => {
   return (
     <div>
+      {label && <InputLabel label={label} />}
       <input
         type={type}
         onChange={onChange}
@@ -24,7 +28,7 @@ const InputField = ({
         className='themeBorder py-4 px-6 placeholder:text-borderGrey w-full'
         placeholder={placeholder}
       />
-      {errorMessage && <p className='text-red-500 text-left'>{errorMessage}</p>}
+      {errorMessage && <p className='errorMessage text-left'>{errorMessage}</p>}
     </div>
   );
 };

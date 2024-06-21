@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SectionTitle from '../../components/SectionTitle';
 
 const CreatePostPage = () => {
   const [post, setPost] = useState({
@@ -15,9 +16,7 @@ const CreatePostPage = () => {
   };
   return (
     <div className=''>
-      <div className='themeBorder defaultBg shadowBorder py-5 mb-4 ml-2 '>
-        張貼動態
-      </div>
+      <SectionTitle title='張貼動態' />
       <div className='itemWrapper p-8'>
         <div className='mb-4  text-left'>
           <p className='mb-1 '>貼文內容</p>

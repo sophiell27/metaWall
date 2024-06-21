@@ -17,6 +17,7 @@ export default {
         navy: '#03438D',
         grass: '#83C51D',
         gold: '#FAA722',
+        pinkOrange: '#F57375',
         apple: '#DE4B63',
       },
       spacing: {

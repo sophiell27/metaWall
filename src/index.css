@@ -24,4 +24,7 @@
     .shadowBorder {
         box-shadow: #fff -5px 5px 0 0, #000 -5px 5px 0px 2px;
     }
+    .errorMessage {
+        @apply text-sm text-pinkOrange
+    }
 }

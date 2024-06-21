@@ -6,6 +6,7 @@ import WallPage from './pages/WallMainPage/WallPage';
 import CreatePostPage from './pages/WallMainPage/CreatePostPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
+import ProfileUpdatePage from './pages/InfoModifyPage/ProfileUpdatePage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='' element={<WallMainPage />}>
           <Route path='' element={<WallPage />} />
           <Route path='newPost' element={<CreatePostPage />} />
+          <Route path='user/updateInfo' element={<ProfileUpdatePage />} />
         </Route>
       </Route>
       <Route path='/metaWall/login' element={<LoginPage />} />
