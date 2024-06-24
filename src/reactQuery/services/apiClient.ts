@@ -8,7 +8,6 @@ interface IApiResponse<T> {
   status: boolean;
   data: T;
 }
-
 class APIClient<T> {
   endpoint: string;
 
@@ -20,13 +19,26 @@ class APIClient<T> {
     axiosInstance
       .get<IApiResponse<T>>(
         `${this.endpoint}?timeSort=${timeSort}&keyword=${keyword}`,
+        {
+          headers: {
+            Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+          },
+        },
       )
       .then((res) => {
         return res.data.data;
       });
-  get = (id: string) =>
+  getByid = (id: string) =>
     axiosInstance
       .get<IApiResponse<T>>(`${this.endpoint}/${id}`)
+      .then((res) => res.data.data);
+  get = () =>
+    axiosInstance
+      .get<IApiResponse<T>>(this.endpoint, {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+        },
+      })
       .then((res) => res.data.data);
 }
 
