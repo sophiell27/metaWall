@@ -1,4 +1,4 @@
-import { IPost } from '../types';
+import { IPost } from '../../../types';
 import Photo from './Avatar';
 
 const ListItem = ({ item }: { item: IPost }) => {
@@ -9,7 +9,7 @@ const ListItem = ({ item }: { item: IPost }) => {
         <Photo size='h-11 w-11'>
           {user.imageUrl && <img src={user.imageUrl} alt='' />}
         </Photo>
-        <div className='text-left'>
+        <div className=''>
           <h4>{user.username}</h4>
           <small>{createdAt.toLocaleString()}</small>
         </div>

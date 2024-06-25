@@ -5,7 +5,7 @@ import { axiosInstance } from '../../reactQuery/services/apiClient';
 import { useNavigate } from 'react-router-dom';
 import axios, { Axios } from 'axios';
 
-const CreatePostPage = () => {
+const NewPostPage = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState({
     content: '',
@@ -89,4 +89,4 @@ const CreatePostPage = () => {
   );
 };
 
-export default CreatePostPage;
+export default NewPostPage;

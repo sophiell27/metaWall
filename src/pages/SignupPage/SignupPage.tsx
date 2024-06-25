@@ -16,7 +16,7 @@ const SignupPage = () => {
 
   const { mutateAsync } = useMutation({
     mutationFn: () =>
-      axiosInstance.post('/users/signup', {
+      axiosInstance.post('/users/sign_up', {
         email,
         password,
         confirmPassword,

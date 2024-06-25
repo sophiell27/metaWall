@@ -1,15 +1,14 @@
-import { ChangeEvent } from 'react';
 import InputLabel from './InputLabel';
 interface IRadioField {
   label: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   radioOptions: {
     id: string;
     name: string;
     value: string;
     label: string;
   }[];
-  checked: string;
+  checked: string | undefined;
 }
 
 const RadioField = ({
@@ -30,7 +29,8 @@ const RadioField = ({
               name={name}
               value={value}
               className='mr-3'
-              onChange={onChange}
+              onClick={() => onChange(value)}
+              onChange={(e) => onChange(e.target.value)}
               checked={checked === value}
             />
             <label htmlFor={id}>{label}</label>

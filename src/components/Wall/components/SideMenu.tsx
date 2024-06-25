@@ -1,14 +1,10 @@
 import { FaRegThumbsUp, FaRegBell } from 'react-icons/fa';
 import Avatar from './Avatar';
 import Photo from './Photo';
-import { Link } from 'react-router-dom';
-import useUser from '../reactQuery/hooks/user/useUser';
 const SideMenu = () => {
-    const data = useUser();
-
     const list = [
         {
-            title: data?.name || '',
+            title: 'user',
             onClick: () => {},
             imageUrl: ''
         },
@@ -25,22 +21,18 @@ const SideMenu = () => {
     ];
     return (
         <div className='py-8 px-6 themeBorder bg-white'>
-            <Link to='/metaWall/newPost'>
-                <button className='w-full bg-navy text-white py-4 rounded-default shadow-button ml-[2.5px] mb-6'>
-                    張貼動態
-                </button>
-            </Link>
-            <div className='flex flex-col gap-y-22px'>
-                {list.map(({ imageUrl, Icon, title, onClick }, index) => (
-                    <div
-                        className='flex items-center gap-x-4 cursor-pointer'
-                        key={index}
-                        onClick={onClick}>
+            <button className='w-full bg-navy text-white py-4 rounded-default shadow-button mb-6'>
+                張貼動態
+            </button>
+            <div className='flex flex-col gap-y-22'>
+                {list.map(({ imageUrl, Icon, title }, index) => (
+                    <div className='flex items-center gap-x-4' key={index}>
                         <Avatar
-                            size='w-50px h-50px'
+                            size='w-50 h-50'
                             borderColorClass='border-navy'
                             backgroundColorClass='bg-babyBlue'
-                            textColorClass='text-navy'>
+                            textColorClass='text-navy'
+                            >
                             {Icon ? Icon : <Photo imageUrl={imageUrl} />}
                         </Avatar>
                         <p>{title}</p>

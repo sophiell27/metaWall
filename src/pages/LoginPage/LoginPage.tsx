@@ -13,9 +13,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const { mutateAsync } = useMutation({
-    mutationFn: () => axiosInstance.post('/users/login', { email, password }),
+    mutationFn: () => axiosInstance.post('/users/sign_in', { email, password }),
     onSuccess: (res) => {
+      console.log('res', res);
       sessionStorage.setItem('token', res.data.token);
+      sessionStorage.setItem('id', res.data.id);
       navigate('/metawall');
     },
     onError: (err) => {

@@ -3,10 +3,14 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import UpdatePassword from './UpdatePassword';
 import UpdateProfile from './UpdateProfile';
+import useUser from '../../reactQuery/hooks/user/useUser';
+import { IUser } from '../../types';
 
-const ProfileUpdatePage = () => {
+const UpdateInfoPage = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const tabs = ['暱稱修改', '重設密碼'];
+
+  const { data } = useUser();
 
   return (
     <div className=''>
@@ -29,11 +33,15 @@ const ProfileUpdatePage = () => {
           ))}
         </div>
         <div className='itemWrapper mx-auto py-7 px-[105px]'>
-          {tabIndex === 0 ? <UpdateProfile /> : <UpdatePassword />}
+          {tabIndex === 0 ? (
+            <UpdateProfile user={data as unknown as IUser} />
+          ) : (
+            <UpdatePassword />
+          )}
         </div>
-        ;
+        F ;
       </div>
     </div>
   );
 };
-export default ProfileUpdatePage;
+export default UpdateInfoPage;

@@ -11,7 +11,9 @@ const WallPage = () => {
   const [keyword, setKeyWord] = useState('');
 
   const timeSort = selectedIndex === 0 ? 'desc' : 'asc';
-  const { data } = usePosts(timeSort, keyword);
+  const { data, isError } = usePosts(timeSort, keyword);
+  console.log('isError', isError);
+  console.log('data', data);
 
   return (
     <div className=''>
