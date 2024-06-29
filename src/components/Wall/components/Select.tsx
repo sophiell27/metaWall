@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaChevronDown, FaCheck } from 'react-icons/fa';
 
 const Select = ({
