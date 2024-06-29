@@ -4,13 +4,13 @@ import Photo from './Photo';
 import { Link } from 'react-router-dom';
 import useUser from '../reactQuery/hooks/user/useUser';
 const SideMenu = () => {
-    const data = useUser();
+    const { data } = useUser();
 
     const list = [
         {
-            title: data?.name || '',
+            title: data?.username || '',
             onClick: () => {},
-            imageUrl: ''
+            imageUrl: data?.imageUrl
         },
         {
             title: '追蹤名單',
@@ -26,7 +26,7 @@ const SideMenu = () => {
     return (
         <div className='py-8 px-6 themeBorder bg-white'>
             <Link to='/metaWall/newPost'>
-                <button className='w-full bg-navy text-white py-4 rounded-default shadow-button ml-[2.5px] mb-6'>
+                <button className='w-full bg-navy text-white py-4 rounded-default shadow-button ml-[2.5px] mb-6 active:shadow-none'>
                     張貼動態
                 </button>
             </Link>
@@ -41,7 +41,9 @@ const SideMenu = () => {
                             borderColorClass='border-navy'
                             backgroundColorClass='bg-babyBlue'
                             textColorClass='text-navy'>
-                            {Icon ? Icon : <Photo imageUrl={imageUrl} />}
+                            {Icon
+                                ? Icon
+                                : imageUrl && <Photo imageUrl={imageUrl} />}
                         </Avatar>
                         <p>{title}</p>
                     </div>
