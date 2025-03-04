@@ -11,39 +11,40 @@ import UpdateInfoPage from './pages/UpdateInfoPage/UpdateInfoPage';
 import NewPostPage from './pages/WallMainPage/NewPostPage';
 
 function App() {
-    const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+  console.log(
+    'import.meta.env.VITE_API_BASE_URL',
+    import.meta.env.VITE_API_BASE_URL,
+  );
 
-    useEffect(() => {
-        const checkAuth = () => {
-            const token = window.sessionStorage.getItem('token');
-            console.log('token', token);
-            if (token) {
-                const isExpired = isTokenExpired(token);
-                if (!isExpired) {
-                    setIsAuth(true);
-                }
-            }
-        };
-        checkAuth();
-    }, []);
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = window.sessionStorage.getItem('token');
+      console.log('token', token);
+      if (token) {
+        const isExpired = isTokenExpired(token);
+        if (!isExpired) {
+          setIsAuth(true);
+        }
+      }
+    };
+    checkAuth();
+  }, []);
 
-    console.log('isAuth', isAuth);
-    return (
-        <Routes>
-            <Route path='/metaWall' element={<LayoutPage />}>
-                <Route path='' element={<WallMainPage />}>
-                    <Route path='' element={<WallPage />} />
-                    <Route path='newPost' element={<NewPostPage />} />
-                    <Route
-                        path='user/updateInfo'
-                        element={<UpdateInfoPage />}
-                    />
-                </Route>
-            </Route>
-            <Route path='/metaWall/login' element={<LoginPage />} />
-            <Route path='/metaWall/signup' element={<SignupPage />} />
-        </Routes>
-    );
+  console.log('isAuth', isAuth);
+  return (
+    <Routes>
+      <Route path='/metaWall' element={<LayoutPage />}>
+        <Route path='' element={<WallMainPage />}>
+          <Route path='' element={<WallPage />} />
+          <Route path='newPost' element={<NewPostPage />} />
+          <Route path='user/updateInfo' element={<UpdateInfoPage />} />
+        </Route>
+      </Route>
+      <Route path='/metaWall/login' element={<LoginPage />} />
+      <Route path='/metaWall/signup' element={<SignupPage />} />
+    </Routes>
+  );
 }
 
 export default App;
