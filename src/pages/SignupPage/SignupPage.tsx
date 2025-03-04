@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../reactQuery/services/apiClient';
 import loginImage from '../../assets/images/loginImg.svg';
+import axios from 'axios';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
 
   const { mutateAsync } = useMutation({
     mutationFn: () =>
@@ -26,11 +29,14 @@ const SignupPage = () => {
       sessionStorage.setItem('token', res.data.token);
       navigate('/metaWall');
     },
-    onError: (err) => {
-      console.log('------------------------------------');
-      console.log('line 29 : err:');
-      console.log(err);
-      console.log('------------------------------------');
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        // Handle Axios error with response
+        setError(error.response.data.message);
+      } else {
+        // Handle generic error
+        setError('Something went wrong. Please try again later.');
+      }
     },
   });
 
@@ -78,6 +84,7 @@ const SignupPage = () => {
               }
             />
           </div>
+          <ErrorMessage errorMessage={error} />
           <BaseButton
             label='註冊'
             classname='mb-4'

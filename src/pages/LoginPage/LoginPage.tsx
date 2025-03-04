@@ -6,11 +6,14 @@ import { axiosInstance } from '../../reactQuery/services/apiClient';
 import InputField from '../../components/InputField';
 import BaseButton from '../../components/BaseButton';
 import loginImage from '../../assets/images/loginImg.svg';
+import axios from 'axios';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const { mutateAsync } = useMutation({
     mutationFn: () => axiosInstance.post('/users/sign_in', { email, password }),
@@ -20,8 +23,14 @@ const LoginPage = () => {
       sessionStorage.setItem('id', res.data.id);
       navigate('/metawall');
     },
-    onError: (err) => {
-      console.log(err);
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        // Handle Axios error with response
+        setError(error.response.data.message);
+      } else {
+        // Handle generic error
+        setError('Something went wrong. Please try again later.');
+      }
     },
   });
 
@@ -51,6 +60,7 @@ const LoginPage = () => {
               }
             />
           </div>
+          <ErrorMessage errorMessage={error} />
           <BaseButton
             label='登入'
             classname='mb-4'
