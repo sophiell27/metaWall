@@ -1,18 +1,18 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import LayoutPage from './pages/LayoutPage/LayoutPage';
 import WallMainPage from './pages/WallMainPage/WallMainPage';
 import WallPage from './pages/WallMainPage/WallPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { isTokenExpired } from './pages/LayoutPage/util';
 import UpdateInfoPage from './pages/UpdateInfoPage/UpdateInfoPage';
 import NewPostPage from './pages/WallMainPage/NewPostPage';
 import useUserStore from './stores/useUserStore';
 
 function App() {
-  const { setLogin } = useUserStore();
+  const { setLogin, isLogin } = useUserStore();
 
   useEffect(() => {
     const checkAuth = () => {
@@ -30,7 +30,14 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<LayoutPage />}>
-        <Route path='' element={<WallMainPage />}>
+        <Route
+          path=''
+          element={
+            <PrivateRoute isLogin={isLogin}>
+              <WallMainPage />
+            </PrivateRoute>
+          }
+        >
           <Route path='' element={<WallPage />} />
           <Route path='newPost' element={<NewPostPage />} />
           <Route path='user/updateInfo' element={<UpdateInfoPage />} />
@@ -41,5 +48,13 @@ function App() {
     </Routes>
   );
 }
+
+const PrivateRoute = ({
+  children,
+  isLogin,
+}: {
+  children: ReactNode;
+  isLogin: boolean;
+}) => (isLogin ? children : <Navigate to='/'></Navigate>);
 
 export default App;
