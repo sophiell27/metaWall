@@ -1,28 +1,31 @@
 import { Link } from 'react-router-dom';
 import Photo from '../../components/Photo';
 import Avatar from '../../components/Avatar';
-import { useState } from 'react';
+import { useReducer } from 'react';
 import useUserStore from '../../stores/useUserStore';
 
-const ACTION_LIST = [
-  {
-    title: '我的貼文牆',
-    path: '/',
-  },
-  {
-    title: '修改個人資料',
-    path: '/user/updateInfo',
-  },
-  {
-    title: '登出',
-    path: '/login',
-    onClick: () => window.sessionStorage.setItem('token', ''),
-  },
-];
-
 const Header = () => {
-  const { isLogin, userInfo } = useUserStore();
-  const [openActionList, setOpenActionList] = useState(false);
+  const { isLogin, userInfo, setLogin } = useUserStore();
+  const [isMenuOpen, toggleMenu] = useReducer((prev) => !prev, false);
+
+  const ACTION_LIST = [
+    {
+      title: '我的貼文牆',
+      path: '/',
+    },
+    {
+      title: '修改個人資料',
+      path: '/user/updateInfo',
+    },
+    {
+      title: '登出',
+      path: '/login',
+      onClick: () => {
+        setLogin(false);
+        window.sessionStorage.setItem('token', '');
+      },
+    },
+  ];
   return (
     <>
       <header className=' p-2 borderBottom '>
@@ -33,10 +36,7 @@ const Header = () => {
           <div className='alignIcon'>
             {isLogin && userInfo ? (
               <div>
-                <div
-                  className='alignIcon cursor-pointer'
-                  onClick={() => setOpenActionList((prev) => !prev)}
-                >
+                <div className='alignIcon cursor-pointer' onClick={toggleMenu}>
                   <Avatar>
                     <Photo imageUrl={userInfo?.imageUrl || ''} />
                   </Avatar>
@@ -54,7 +54,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-      {openActionList && (
+      {isMenuOpen && (
         <div className='relative z-10'>
           <ul className='absolute right-0 -translate-x-1/2 -top-[5px] grid grid-cols-1 divide-y-2 divide-black shadowBorder-r themeBorder'>
             {ACTION_LIST.map(({ title, path, onClick }) => (
@@ -63,7 +63,7 @@ const Header = () => {
                 key={path}
                 to={path}
                 onClick={() => {
-                  setOpenActionList(false);
+                  toggleMenu();
                   onClick && onClick();
                 }}
               >

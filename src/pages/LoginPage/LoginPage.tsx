@@ -18,7 +18,6 @@ const LoginPage = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: () => axiosInstance.post('/users/sign_in', { email, password }),
     onSuccess: (res) => {
-      console.log('res', res);
       sessionStorage.setItem('token', res.data.token);
       sessionStorage.setItem('id', res.data.id);
       navigate('/');
