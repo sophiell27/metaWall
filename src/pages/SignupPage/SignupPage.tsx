@@ -27,7 +27,7 @@ const SignupPage = () => {
       }),
     onSuccess: (res) => {
       sessionStorage.setItem('token', res.data.token);
-      navigate('/metaWall');
+      navigate('/');
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
@@ -91,7 +91,7 @@ const SignupPage = () => {
             onClick={mutateAsync}
             disabled={!email || !password || !confirmPassword || !username}
           />
-          <Link to='/metaWall/login'>登入</Link>
+          <Link to='/login'>登入</Link>
         </div>
       </div>
     </WallWrapper>

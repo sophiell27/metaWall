@@ -31,7 +31,7 @@ const NewPostPage = () => {
       console.log('res', res);
       // sessionStorage.setItem('token', res.data.token);
       // sessionStorage.setItem('id', res.data.id);
-      navigate('/metawall');
+      navigate('/');
     },
     onError: (err) => {
       console.log(err);

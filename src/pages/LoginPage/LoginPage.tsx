@@ -8,9 +8,11 @@ import BaseButton from '../../components/BaseButton';
 import loginImage from '../../assets/images/loginImg.svg';
 import axios from 'axios';
 import ErrorMessage from '../../components/ErrorMessage';
+import useUserStore from '../../store/userStore';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const userStore = useUserStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,7 +23,8 @@ const LoginPage = () => {
       console.log('res', res);
       sessionStorage.setItem('token', res.data.token);
       sessionStorage.setItem('id', res.data.id);
-      navigate('/metawall');
+      userStore.setIsLogin(true);
+      navigate('/');
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
@@ -67,7 +70,7 @@ const LoginPage = () => {
             onClick={mutateAsync}
             disabled={!email || !password || password.length < 8}
           />
-          <Link to='/metaWall/signup'>註冊帳號</Link>
+          <Link to='/signup'>註冊帳號</Link>
         </div>
       </div>
     </WallWrapper>
