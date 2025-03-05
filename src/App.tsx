@@ -29,7 +29,7 @@ function App() {
   console.log('isAuth', isAuth);
   return (
     <Routes>
-      <Route path='/' element={<LayoutPage />}>
+      <Route path='/metaWall' element={<LayoutPage />}>
         <Route path='' element={<WallMainPage />}>
           <Route path='' element={<WallPage />} />
           <Route path='newPost' element={<NewPostPage />} />
