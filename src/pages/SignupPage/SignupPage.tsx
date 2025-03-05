@@ -17,7 +17,7 @@ const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: () =>
       axiosInstance.post('/users/sign_up', {
         email,
@@ -27,7 +27,7 @@ const SignupPage = () => {
       }),
     onSuccess: (res) => {
       sessionStorage.setItem('token', res.data.token);
-      navigate('/metaWall');
+      navigate('/');
     },
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
@@ -89,9 +89,11 @@ const SignupPage = () => {
             label='註冊'
             classname='mb-4'
             onClick={mutateAsync}
-            disabled={!email || !password || !confirmPassword || !username}
+            disabled={
+              !email || !password || !confirmPassword || !username || isPending
+            }
           />
-          <Link to='/metaWall/login'>登入</Link>
+          <Link to='/login'>登入</Link>
         </div>
       </div>
     </WallWrapper>

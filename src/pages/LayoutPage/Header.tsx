@@ -2,54 +2,53 @@ import { Link } from 'react-router-dom';
 import Photo from '../../components/Photo';
 import Avatar from '../../components/Avatar';
 import { useState } from 'react';
-
-interface IHeader {
-  isAuth: boolean;
-  imageUrl?: string;
-}
+import useUserStore from '../../stores/useUserStore';
 
 const ACTION_LIST = [
   {
     title: '我的貼文牆',
-    path: '/metaWall',
+    path: '/',
   },
   {
     title: '修改個人資料',
-    path: '/metaWall/user/updateInfo',
+    path: '/user/updateInfo',
   },
   {
     title: '登出',
-    path: '/metaWall/login',
+    path: '/login',
     onClick: () => window.sessionStorage.setItem('token', ''),
   },
 ];
 
-const Header = ({ isAuth, imageUrl }: IHeader) => {
+const Header = () => {
+  const { isLogin, userInfo } = useUserStore();
   const [openActionList, setOpenActionList] = useState(false);
   return (
     <>
       <header className=' p-2 borderBottom '>
         <div className='container flex justify-between items-center'>
-          <Link to='/metaWall' className='font-bold'>
+          <Link to='/' className='font-bold'>
             MetalWall
           </Link>
           <div className='alignIcon'>
-            {isAuth ? (
+            {isLogin && userInfo ? (
               <div>
                 <div
                   className='alignIcon cursor-pointer'
                   onClick={() => setOpenActionList((prev) => !prev)}
                 >
                   <Avatar>
-                    <Photo imageUrl={imageUrl || ''} />
+                    <Photo imageUrl={userInfo?.imageUrl || ''} />
                   </Avatar>
-                  <p className='pb-1 border-b-4 border-b-black '>Member</p>
+                  <p className='pb-1 border-b-4 border-b-black '>
+                    {userInfo?.username}
+                  </p>
                 </div>
               </div>
             ) : (
               <>
-                <Link to='/metaWall/signup'>註冊</Link>
-                <Link to='/metaWall/login'>登入</Link>
+                <Link to='/signup'>註冊</Link>
+                <Link to='/login'>登入</Link>
               </>
             )}
           </div>
