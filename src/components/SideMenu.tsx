@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import useUser from '../reactQuery/hooks/user/useUser';
 import useUserStore from '../stores/useUserStore';
 import { useEffect } from 'react';
+import BaseButton from './BaseButton';
 const SideMenu = () => {
   const { setUserInfo } = useUserStore();
   const { data } = useUser();
@@ -32,9 +33,7 @@ const SideMenu = () => {
   return (
     <div className='py-8 px-6 themeBorder bg-white'>
       <Link to='/newPost'>
-        <button className='w-full bg-navy text-white py-4 rounded-default shadow-button ml-[2.5px] mb-6 active:shadow-none'>
-          張貼動態
-        </button>
+        <BaseButton label='張貼動態' classname='mb-6' />
       </Link>
       <div className='flex flex-col gap-y-22px'>
         {list.map(({ imageUrl, Icon, title, onClick }, index) => (

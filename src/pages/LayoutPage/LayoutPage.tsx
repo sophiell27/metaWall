@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
+import Header from '../../components/Layout/Header';
 import WallWrapper from '../../components/WallWrapper';
 import { isTokenExpired } from './util';
 import { useEffect } from 'react';

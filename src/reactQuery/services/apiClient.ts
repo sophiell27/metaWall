@@ -15,10 +15,12 @@ class APIClient<T> {
     this.endpoint = endpoint;
   }
 
-  getAll = (timeSort?: string, keyword?: string) =>
+  getAll = (timeSort?: string, keyword?: string, userId?: string) =>
     axiosInstance
       .get<IApiResponse<T>>(
-        `${this.endpoint}?timeSort=${timeSort}&keyword=${keyword}`,
+        `${this.endpoint}${
+          userId ? `/user/${userId}` : ''
+        }?timeSort=${timeSort}&keyword=${keyword}`,
         {
           headers: {
             Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
@@ -26,11 +28,16 @@ class APIClient<T> {
         },
       )
       .then((res) => {
+        console.log('res', res);
         return res.data.data;
       });
-  getByid = (id: string) =>
+  getById = (id: string | undefined) =>
     axiosInstance
-      .get<IApiResponse<T>>(`${this.endpoint}/${id}`)
+      .get<IApiResponse<T>>(`${this.endpoint}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+        },
+      })
       .then((res) => res.data.data);
   get = () =>
     axiosInstance
@@ -40,6 +47,16 @@ class APIClient<T> {
         },
       })
       .then((res) => res.data.data);
+
+  followUser = (follow_id: string) => {
+    axiosInstance
+      .get<IApiResponse<T>>(`${this.endpoint}/${follow_id}/follow`, {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+        },
+      })
+      .then((res) => res.data.data);
+  };
 }
 
 export default APIClient;

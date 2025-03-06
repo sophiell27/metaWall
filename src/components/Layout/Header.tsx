@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import Photo from '../../components/Photo';
-import Avatar from '../../components/Avatar';
+import Photo from '../Photo';
+import Avatar from '../Avatar';
 import { useReducer } from 'react';
 import useUserStore from '../../stores/useUserStore';
 

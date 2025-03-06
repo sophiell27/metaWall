@@ -7,6 +7,8 @@ export interface IUser {
   password?: string;
   gender?: 'male' | 'female';
   imageUrl?: string;
+  followers: string[];
+  following: string[];
 }
 
 export interface IPost {

@@ -39,6 +39,7 @@ function App() {
           }
         >
           <Route path='' element={<WallPage />} />
+          <Route path=':userId' element={<WallPage />} />
           <Route path='newPost' element={<NewPostPage />} />
           <Route path='user/updateInfo' element={<UpdateInfoPage />} />
         </Route>
