@@ -10,7 +10,6 @@ const NewPostPage = () => {
     content: '',
     imageUrl: '',
   });
-  console.log('post', post);
 
   const { mutateAsync } = useMutation({
     mutationFn: () =>
@@ -27,14 +26,12 @@ const NewPostPage = () => {
           },
         },
       ),
-    onSuccess: (res) => {
-      console.log('res', res);
-      // sessionStorage.setItem('token', res.data.token);
-      // sessionStorage.setItem('id', res.data.id);
+    onSuccess: () => {
+      console.log('created new post');
       navigate('/');
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
+      console.log('unable to create new post');
     },
   });
 
@@ -42,11 +39,6 @@ const NewPostPage = () => {
     if (!post.content) {
       return;
     }
-    console.log('payload', {
-      content: post.content,
-      // user: window.sessionStorage.getItem('id')
-    });
-    // console.log('mutateAsync', mutateAsync());
     mutateAsync();
   };
   return (

@@ -14,8 +14,6 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
     data && userInfo
       ? data.followers.findIndex(({ user }) => user === userInfo._id) >= 0
       : false;
-  console.log('data.followers', data?.followers);
-  console.log('userInfo', userInfo);
 
   const { mutateAsync: follow, isPending: followPending } = useMutation({
     mutationFn: () =>
@@ -30,7 +28,7 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] });
-      console.log('followeed User');
+      console.log('followed');
     },
     onError: () => {
       console.log('Unable to follow user');
@@ -46,7 +44,7 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] });
-      console.log('unfollowed User');
+      console.log('unfollowed');
     },
     onError: () => {
       console.log('Unable to unfollow user');

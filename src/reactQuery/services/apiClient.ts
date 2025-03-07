@@ -29,7 +29,6 @@ class APIClient<T> {
         },
       )
       .then((res) => {
-        console.log('res', res);
         return res.data.data;
       });
   getById = (id: string | undefined) =>

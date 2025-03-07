@@ -24,13 +24,13 @@ const UpdatePassword = () => {
       );
     },
     onSuccess: (res) => {
-      console.log('res', res);
+      console.log('updated password');
       sessionStorage.setItem('token', res.data.token);
       setPassword('');
       setConfirmPassword('');
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
+      console.log('unable to update password');
     },
   });
   return (

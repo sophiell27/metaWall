@@ -14,16 +14,6 @@ const Avatar = ({
   backgroundColorClass?: string;
   children?: ReactNode;
 }) => {
-  // const square = `w-${size} h-${size}`;
-  // console.log('------------------------------------');
-  // console.log('line 5 : square:');
-  // console.log(square);
-  // console.log('------------------------------------');
-  // function getSizeClasses() {
-  //     // return 'w-' + size + ' ' + 'h-' + size;
-  //     return 'w-7 h-7';
-  // }
-
   return (
     <div
       className={clsx(
