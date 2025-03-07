@@ -4,11 +4,13 @@ import Photo from '../../../components/Photo';
 import useViewUser from '../../../reactQuery/hooks/user/userViewUser';
 import useUserStore from '../../../stores/useUserStore';
 import { axiosInstance } from '../../../reactQuery/services/apiClient';
+import useAlertMessage from '../../../hooks/userAlertMessage';
 
 const Follow = ({ userId }: { userId: string | undefined }) => {
   const { userInfo } = useUserStore();
   const { data } = useViewUser(userId);
   const queryClient = useQueryClient();
+  const { AlertMessage, setMessage } = useAlertMessage();
 
   const isFollowed =
     data && userInfo
@@ -28,11 +30,8 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] });
-      console.log('followed');
     },
-    onError: () => {
-      console.log('Unable to follow user');
-    },
+    onError: () => setMessage('Unable to follow user'),
   });
 
   const { mutateAsync: unfollow, isPending: unfollowPending } = useMutation({
@@ -44,12 +43,10 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] });
-      console.log('unfollowed');
     },
-    onError: () => {
-      console.log('Unable to unfollow user');
-    },
+    onError: () => setMessage('Unable to unfollow user'),
   });
+
   return (
     data && (
       <div className='flex items-center themeBorder defaultBg shadowBorder rounded-md mb-4 active:'>
@@ -68,6 +65,7 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
             onClick={isFollowed ? unfollow : follow}
           />
         </div>
+        <AlertMessage />
       </div>
     )
   );

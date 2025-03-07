@@ -3,9 +3,11 @@ import SectionTitle from '../../components/SectionTitle';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../reactQuery/services/apiClient';
 import { useNavigate } from 'react-router-dom';
+import useAlertMessage from '../../hooks/userAlertMessage';
 
 const NewPostPage = () => {
   const navigate = useNavigate();
+  const { setMessage, AlertMessage } = useAlertMessage();
   const [post, setPost] = useState({
     content: '',
     imageUrl: '',
@@ -26,13 +28,8 @@ const NewPostPage = () => {
           },
         },
       ),
-    onSuccess: () => {
-      console.log('created new post');
-      navigate('/');
-    },
-    onError: () => {
-      console.log('unable to create new post');
-    },
+    onSuccess: () => navigate('/'),
+    onError: () => setMessage('unable to create new post'),
   });
 
   const handleSumbit = () => {
@@ -43,6 +40,7 @@ const NewPostPage = () => {
   };
   return (
     <div className=''>
+      <AlertMessage />
       <SectionTitle title='張貼動態' />
       <div className='itemWrapper p-8'>
         <div className='mb-4  text-left'>

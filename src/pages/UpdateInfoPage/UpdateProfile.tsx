@@ -7,6 +7,7 @@ import { IUser } from '../../types';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../reactQuery/services/apiClient';
 import { AxiosError } from 'axios';
+import useAlertMessage from '../../hooks/userAlertMessage';
 
 interface IProps {
   user: IUser | undefined;
@@ -19,6 +20,7 @@ const RADIO_OPTIONS = [
 ];
 
 const UpdateProfile = ({ user, refetchUser }: IProps) => {
+  const { setMessage, AlertMessage } = useAlertMessage();
   const initialValue = {
     username: user?.username || '',
     gender: user?.gender || null,
@@ -56,9 +58,7 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
     onSuccess: async () => {
       refetchUser();
     },
-    onError: () => {
-      console.log('unable to upload image');
-    },
+    onError: () => setMessage('unable to upload image'),
   });
   const { mutateAsync: changeInfo } = useMutation<any, AxiosError>({
     mutationFn: () => {
@@ -79,13 +79,12 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
     onSuccess: async () => {
       refetchUser();
     },
-    onError: (err) => {
-      console.log(err);
-    },
+    onError: () => setMessage('unable to change info'),
   });
 
   return (
     <div>
+      <AlertMessage />
       <div className='flex flex-col items-center'>
         <Avatar size='w-[108px] h-[108px]'>
           <img src={user?.imageUrl} alt='' />
