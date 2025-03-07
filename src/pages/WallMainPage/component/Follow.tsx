@@ -1,20 +1,57 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import BaseButton from '../../../components/BaseButton';
 import Photo from '../../../components/Photo';
 import useViewUser from '../../../reactQuery/hooks/user/userViewUser';
 import useUserStore from '../../../stores/useUserStore';
+import { axiosInstance } from '../../../reactQuery/services/apiClient';
 
 const Follow = ({ userId }: { userId: string | undefined }) => {
   const { userInfo } = useUserStore();
   const { data } = useViewUser(userId);
+  const queryClient = useQueryClient();
 
   const isFollowed =
     data && userInfo
-      ? data.followers.findIndex((id) => id === userInfo._id) >= 0
+      ? data.followers.findIndex(({ user }) => user === userInfo._id) >= 0
       : false;
+  console.log('data.followers', data?.followers);
+  console.log('userInfo', userInfo);
 
-  const followUser = () => {
-    console.log('follow');
-  };
+  const { mutateAsync: follow, isPending: followPending } = useMutation({
+    mutationFn: () =>
+      axiosInstance.post(
+        `/users/${userId}/follow`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+          },
+        },
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', userId] });
+      console.log('followeed User');
+    },
+    onError: () => {
+      console.log('Unable to follow user');
+    },
+  });
+
+  const { mutateAsync: unfollow, isPending: unfollowPending } = useMutation({
+    mutationFn: () =>
+      axiosInstance.delete(`/users/${userId}/unfollow`, {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+        },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', userId] });
+      console.log('unfollowed User');
+    },
+    onError: () => {
+      console.log('Unable to unfollow user');
+    },
+  });
   return (
     data && (
       <div className='flex items-center themeBorder defaultBg shadowBorder rounded-md mb-4 active:'>
@@ -27,10 +64,10 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
         </div>
         <div className='ml-auto p-4'>
           <BaseButton
-            label='追蹤'
+            label={isFollowed ? '停止追蹤' : '追蹤'}
             classname='text-black bg-sunshine px-8 py-2'
-            disabled={isFollowed}
-            onClick={followUser}
+            disabled={followPending || unfollowPending}
+            onClick={isFollowed ? unfollow : follow}
           />
         </div>
       </div>

@@ -8,6 +8,7 @@ interface IApiResponse<T> {
   status: boolean;
   data: T;
 }
+
 class APIClient<T> {
   endpoint: string;
 
@@ -47,16 +48,6 @@ class APIClient<T> {
         },
       })
       .then((res) => res.data.data);
-
-  followUser = (follow_id: string) => {
-    axiosInstance
-      .get<IApiResponse<T>>(`${this.endpoint}/${follow_id}/follow`, {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
-        },
-      })
-      .then((res) => res.data.data);
-  };
 }
 
 export default APIClient;
