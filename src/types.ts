@@ -22,4 +22,5 @@ export interface IPost {
   imageUrl?: string;
   createdAt: Date;
   _id: string;
+  likes: string[];
 }
