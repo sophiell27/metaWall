@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom';
-import { IPost } from '../types';
-import Photo from './Avatar';
+import { IPost } from '../../../types';
+import Photo from '../../../components/Avatar';
 import { AiOutlineLike } from 'react-icons/ai';
 import { AiFillLike } from 'react-icons/ai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { axiosInstance } from '../reactQuery/services/apiClient';
-import useAlertMessage from '../hooks/userAlertMessage';
+import { axiosInstance } from '../../../reactQuery/services/apiClient';
+import useAlertMessage from '../../../hooks/userAlertMessage';
 import { BsThreeDots } from 'react-icons/bs';
-import useItemMenu from '../hooks/useItemMenu';
+import useItemMenu from '../../../hooks/useItemMenu';
 import { useState } from 'react';
+import useUserStore from '../../../stores/useUserStore';
 const ListItem = ({ item }: { item: IPost }) => {
   const { ItemMenu, setIsOpen } = useItemMenu();
+  const { userInfo } = useUserStore();
   const { user, createdAt, content, imageUrl, likes, _id } = item;
   const [hasLiked, setHasLiked] = useState<boolean>(
     likes.findIndex((like) => like === user._id) >= 0,
@@ -19,6 +21,7 @@ const ListItem = ({ item }: { item: IPost }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setMessage } = useAlertMessage();
+  const isUserWall = userInfo?._id === user._id;
   const onClick = () => {
     navigate(`/${user._id}`);
   };
@@ -100,18 +103,37 @@ const ListItem = ({ item }: { item: IPost }) => {
     },
   });
 
+  const { mutateAsync: deletePost, isPending: deletePostPending } = useMutation(
+    {
+      mutationFn: () => {
+        console.log('deletePost');
+        return axiosInstance.delete(`/posts/${_id}`, {
+          headers: {
+            Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+          },
+        });
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['posts'] });
+        console.log('delete success');
+      },
+      onError: () => {
+        console.log('delete error');
+        setMessage('something went wrong');
+      },
+    },
+  );
+
   const ACTIONS = [
     {
-      name: '編輯',
-      onClick: () => {},
-    },
-    {
       name: '刪除',
-      onClick: () => {},
+      onClick: deletePost,
     },
   ];
 
-  return (
+  return deletePostPending ? (
+    <p>deleting</p>
+  ) : (
     <div className='p-6 itemWrapper'>
       <div className='flex items-center gap-x-3 mb-4'>
         <Photo size='h-11 w-11'>
@@ -131,10 +153,12 @@ const ListItem = ({ item }: { item: IPost }) => {
           <small>{createdAt.toLocaleString()}</small>
         </div>
         <div className='ml-auto ' onClick={() => setIsOpen((prev) => !prev)}>
-          <div className=''>
-            <BsThreeDots className='cursor-pointer hover:text-gold' />
-            <ItemMenu list={ACTIONS} />
-          </div>
+          {isUserWall && (
+            <div>
+              <BsThreeDots className='cursor-pointer hover:text-gold' />
+              <ItemMenu list={ACTIONS} />
+            </div>
+          )}
         </div>
       </div>
       <article className='mb-4 text-start'>{content}</article>

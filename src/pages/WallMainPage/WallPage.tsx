@@ -1,5 +1,5 @@
 import EmptyList from '../../components/EmptyList';
-import ListItem from '../../components/ListItem';
+import ListItem from './component/ListItem';
 import Search from '../../components/Search';
 import Select from '../../components/Select';
 import usePosts from '../../reactQuery/hooks/post/usePosts';
