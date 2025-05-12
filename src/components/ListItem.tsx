@@ -8,16 +8,20 @@ import { axiosInstance } from '../reactQuery/services/apiClient';
 import useAlertMessage from '../hooks/userAlertMessage';
 import { BsThreeDots } from 'react-icons/bs';
 import useItemMenu from '../hooks/useItemMenu';
+import { useState } from 'react';
 const ListItem = ({ item }: { item: IPost }) => {
   const { ItemMenu, setIsOpen } = useItemMenu();
   const { user, createdAt, content, imageUrl, likes, _id } = item;
+  const [hasLiked, setHasLiked] = useState<boolean>(
+    likes.findIndex((like) => like === user._id) >= 0,
+  );
+  const [likeCount, setLikeCount] = useState<number>(likes.length);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setMessage } = useAlertMessage();
   const onClick = () => {
     navigate(`/${user._id}`);
   };
-  const hasLiked = likes.findIndex((like) => like === user._id) >= 0;
 
   const LikeIcon = !hasLiked ? (
     <AiOutlineLike size={24} />
@@ -25,8 +29,10 @@ const ListItem = ({ item }: { item: IPost }) => {
     <AiFillLike className='text-red-500' size={24} />
   );
 
-  const { mutateAsync: like, isPending: likePending } = useMutation({
+  const { mutateAsync: like } = useMutation({
     mutationFn: () => {
+      setHasLiked(true);
+      setLikeCount(likeCount + 1);
       return axiosInstance.post(
         `/posts/${_id}/like`,
         {},
@@ -38,12 +44,32 @@ const ListItem = ({ item }: { item: IPost }) => {
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.setQueryData(['posts'], (oldData: { data: IPost[] }) => {
+        if (!oldData) return;
+        return {
+          ...oldData,
+          data: oldData.data.map((post: IPost) => {
+            if (post._id === _id) {
+              return {
+                ...post,
+                likes: [...post.likes, user._id],
+              };
+            }
+            return post;
+          }),
+        };
+      });
     },
-    onError: () => setMessage('something went wrong'),
+    onError: () => {
+      setHasLiked(false);
+      setLikeCount(likeCount - 1);
+      setMessage('something went wrong');
+    },
   });
-  const { mutateAsync: unlike, isPending: unlikePending } = useMutation({
+  const { mutateAsync: unlike } = useMutation({
     mutationFn: () => {
+      setHasLiked(false);
+      setLikeCount(likeCount - 1);
       return axiosInstance.delete(`/posts/${_id}/unlike`, {
         headers: {
           Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
@@ -51,9 +77,27 @@ const ListItem = ({ item }: { item: IPost }) => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.setQueryData(['posts'], (oldData: { data: IPost[] }) => {
+        if (!oldData) return;
+        return {
+          ...oldData,
+          data: oldData.data.map((post: IPost) => {
+            if (post._id === _id) {
+              return {
+                ...post,
+                likes: post.likes.filter((like) => like !== user._id),
+              };
+            }
+            return post;
+          }),
+        };
+      });
     },
-    onError: () => setMessage('something went wrong'),
+    onError: () => {
+      setHasLiked(true);
+      setLikeCount(likeCount + 1);
+      setMessage('something went wrong');
+    },
   });
 
   const ACTIONS = [
@@ -100,10 +144,9 @@ const ListItem = ({ item }: { item: IPost }) => {
       <button
         className='cursor-pointer flex items-center gap-x-1'
         onClick={hasLiked ? () => unlike() : () => like()}
-        disabled={likePending || unlikePending}
       >
         {LikeIcon}
-        <span>{likes.length ? likes.length : ''}</span>
+        <span>{likeCount ? likeCount : ''}</span>
       </button>
     </div>
   );
