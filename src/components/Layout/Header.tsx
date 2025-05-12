@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import Photo from '../Photo';
 import Avatar from '../Avatar';
-import { useReducer } from 'react';
+import { useRef } from 'react';
 import useUserStore from '../../stores/useUserStore';
+import useClickOutside from '../../hooks/useClickOutside';
 
 const Header = () => {
   const { isLogin, userInfo, setLogin } = useUserStore();
-  const [isMenuOpen, toggleMenu] = useReducer((prev) => !prev, false);
+  const menuRef = useRef<HTMLUListElement | null>(null);
+  const { setIsOpen, isOpen } = useClickOutside(menuRef);
 
   const ACTION_LIST = [
     {
@@ -36,7 +38,10 @@ const Header = () => {
           <div className='alignIcon'>
             {isLogin && userInfo ? (
               <div>
-                <div className='alignIcon cursor-pointer' onClick={toggleMenu}>
+                <div
+                  className='alignIcon cursor-pointer'
+                  onClick={() => setIsOpen(true)}
+                >
                   <Avatar>
                     <Photo imageUrl={userInfo?.imageUrl || ''} />
                   </Avatar>
@@ -54,16 +59,19 @@ const Header = () => {
           </div>
         </div>
       </header>
-      {isMenuOpen && (
+      {isOpen && (
         <div className='relative z-10'>
-          <ul className='absolute right-0 -translate-x-1/2 -top-[5px] grid grid-cols-1 divide-y-2 divide-black shadowBorder-r themeBorder'>
+          <ul
+            ref={menuRef}
+            className='absolute right-0 -translate-x-1/2 -top-[5px] grid grid-cols-1 divide-y-2 divide-black shadowBorder-r themeBorder'
+          >
             {ACTION_LIST.map(({ title, path, onClick }) => (
               <Link
                 className='py-2 px-12 bg-white'
                 key={path}
                 to={path}
                 onClick={() => {
-                  toggleMenu();
+                  setIsOpen(false);
                   onClick && onClick();
                 }}
               >

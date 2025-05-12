@@ -6,7 +6,10 @@ import { AiFillLike } from 'react-icons/ai';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../reactQuery/services/apiClient';
 import useAlertMessage from '../hooks/userAlertMessage';
+import { BsThreeDots } from 'react-icons/bs';
+import useItemMenu from '../hooks/useItemMenu';
 const ListItem = ({ item }: { item: IPost }) => {
+  const { ItemMenu, setIsOpen } = useItemMenu();
   const { user, createdAt, content, imageUrl, likes, _id } = item;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -17,9 +20,9 @@ const ListItem = ({ item }: { item: IPost }) => {
   const hasLiked = likes.findIndex((like) => like === user._id) >= 0;
 
   const LikeIcon = !hasLiked ? (
-    <AiOutlineLike />
+    <AiOutlineLike size={24} />
   ) : (
-    <AiFillLike className='text-red-500' />
+    <AiFillLike className='text-red-500' size={24} />
   );
 
   const { mutateAsync: like, isPending: likePending } = useMutation({
@@ -53,6 +56,17 @@ const ListItem = ({ item }: { item: IPost }) => {
     onError: () => setMessage('something went wrong'),
   });
 
+  const ACTIONS = [
+    {
+      name: '編輯',
+      onClick: () => {},
+    },
+    {
+      name: '刪除',
+      onClick: () => {},
+    },
+  ];
+
   return (
     <div className='p-6 itemWrapper'>
       <div className='flex items-center gap-x-3 mb-4'>
@@ -71,6 +85,12 @@ const ListItem = ({ item }: { item: IPost }) => {
             {user.username}
           </h4>
           <small>{createdAt.toLocaleString()}</small>
+        </div>
+        <div className='ml-auto ' onClick={() => setIsOpen((prev) => !prev)}>
+          <div className=''>
+            <BsThreeDots className='cursor-pointer hover:text-gold' />
+            <ItemMenu list={ACTIONS} />
+          </div>
         </div>
       </div>
       <article className='mb-4 text-start'>{content}</article>
