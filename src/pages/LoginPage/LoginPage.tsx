@@ -25,7 +25,7 @@ const LoginPage = () => {
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
         // Handle Axios error with response
-        setError(error.response.data.message);
+        setError('Something went wrong');
       } else {
         // Handle generic error
         setError('Something went wrong. Please try again later.');
