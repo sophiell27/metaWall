@@ -16,12 +16,14 @@ const useItemMenu = () => {
             className='absolute top-0 right-4 min-w-[300px] themeBorder shadowBorder-r bg-white divide-y-2 divide-black'
             ref={menuRef}
           >
-            {list.map((item) => (
-              <li
-                key={item.name}
-                className='p-4 bg-white hover:bg-gold hover:text-black cursor-pointer'
-              >
-                <button onClick={item.onClick}>{item.name}</button>
+            {list.map(({ name, onClick }) => (
+              <li key={name}>
+                <button
+                  onClick={onClick}
+                  className='p-4 bg-white hover:bg-gold hover:text-black cursor-pointer w-full'
+                >
+                  {name}
+                </button>
               </li>
             ))}
           </ul>
