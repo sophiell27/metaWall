@@ -60,7 +60,7 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
         <div className='ml-auto p-4'>
           <BaseButton
             label={isFollowed ? '停止追蹤' : '追蹤'}
-            classname='text-black bg-sunshine px-8 py-2'
+            classname='!text-black bg-sunshine px-8 py-2'
             disabled={followPending || unfollowPending}
             onClick={isFollowed ? unfollow : follow}
           />

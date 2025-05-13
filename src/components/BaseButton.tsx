@@ -9,14 +9,14 @@ interface IBaseButton {
 
 const BaseButton = ({
   label,
-  classname = 'bg-navy text-white',
+  classname,
   onClick,
   disabled = false,
 }: IBaseButton) => {
   return (
     <button
       className={clsx(
-        'w-full py-4 rounded-default shadow-button border-2 border-black ml-[2.5px] disabled:bg-fogBlue disabled:border-2 disabled:border-darkGrey  disabled:shadow-none active:shadow-none',
+        'w-full py-4 bg-navy text-white rounded-default shadow-button border-2 border-black ml-[2.5px] disabled:bg-fogBlue disabled:border-2 disabled:border-darkGrey  disabled:shadow-none active:shadow-none',
         classname,
       )}
       onClick={onClick}
