@@ -1,3 +1,10 @@
 {
-  "welcome": "hello"
+  "register": "Register",
+  "login": "Login",
+  "welcome_message": "Develop a new social circle in the metaverse",
+  "nickname": "Nick name",
+  "message": {
+    "emptyName": "username must not be empty",
+    "generalError": "Something went wrong. Please try again later."
+  }
 }

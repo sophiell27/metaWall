@@ -1,0 +1,10 @@
+{
+  "register": "註冊",
+  "login": "登入",
+  "welcome_message": "到元宇宙展開全新社交圈",
+  "nickname": "暱稱",
+  "message": {
+    "emptyName": "使用者名稱不能為空",
+    "generalError": "出了點問題。請稍後重試。"
+  }
+}

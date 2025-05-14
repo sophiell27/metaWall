@@ -34,17 +34,43 @@ async function fetchTranslations() {
   const header = rows[0];
   const data = rows.slice(1);
 
-  const translations: Record<string, Record<string, string>> = {};
+  // const translations: Record<string, Record<string, string>> = {};
+  const translations: Record<
+    string,
+    Record<string, string | Record<string, string>>
+  > = {};
 
   header.forEach((lang) => {
     if (lang !== 'key') translations[lang] = {};
   });
 
   data.forEach((row) => {
+    // [key, , ]
     const key = row[0];
+    const isNested = key.includes('.');
     header.forEach((lang, idx) => {
+      //[key, en.zh]
       if (lang !== 'key') {
-        translations[lang][key] = row[idx] || '';
+        if (isNested) {
+          const [parentKey, childKey] = key.split('.');
+          if (!translations[lang][parentKey]) {
+            console.log(
+              '!translations[lang][parentKey]',
+              !translations[lang][parentKey],
+            );
+            translations[lang][parentKey] = {};
+          }
+          if (
+            typeof translations[lang][parentKey] === 'object' &&
+            translations[lang][parentKey] !== null
+          ) {
+            (translations[lang][parentKey] as Record<string, string>)[
+              childKey
+            ] = row[idx] || '';
+          }
+        } else {
+          translations[lang][key] = row[idx] || '';
+        }
       }
     });
   });
