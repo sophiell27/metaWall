@@ -6,7 +6,9 @@ import useUser from '../reactQuery/hooks/user/useUser';
 import useUserStore from '../stores/useUserStore';
 import { useEffect } from 'react';
 import BaseButton from './BaseButton';
+import { useTranslation } from 'react-i18next';
 const SideMenu = () => {
+  const { t } = useTranslation();
   const { setUserInfo } = useUserStore();
   const { data } = useUser();
   useEffect(() => {
@@ -15,17 +17,17 @@ const SideMenu = () => {
 
   const list = [
     {
-      title: data?.username || '',
+      title_key: data?.username || '',
       onClick: () => {},
       imageUrl: data?.imageUrl,
     },
     {
-      title: '追蹤名單',
+      title_key: 'followList',
       onClick: () => {},
       Icon: <FaRegBell />,
     },
     {
-      title: '我按讚的文章',
+      title_key: 'postLike',
       onClick: () => {},
       Icon: <FaRegThumbsUp />,
     },
@@ -33,10 +35,10 @@ const SideMenu = () => {
   return (
     <div className='py-8 px-6 themeBorder bg-white'>
       <Link to='/newPost'>
-        <BaseButton label='張貼動態' classname='mb-6' />
+        <BaseButton label_key='createPost' classname='mb-6' />
       </Link>
       <div className='flex flex-col gap-y-22px'>
-        {list.map(({ imageUrl, Icon, title, onClick }, index) => (
+        {list.map(({ imageUrl, Icon, title_key, onClick }, index) => (
           <div
             className='flex items-center gap-x-4 cursor-pointer'
             key={index}
@@ -50,7 +52,7 @@ const SideMenu = () => {
             >
               {Icon ? Icon : imageUrl && <Photo imageUrl={imageUrl} />}
             </Avatar>
-            <p>{title}</p>
+            <p>{t(title_key)}</p>
           </div>
         ))}
       </div>

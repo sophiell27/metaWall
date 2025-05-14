@@ -1,18 +1,20 @@
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 interface IBaseButton {
-  label: string;
+  label_key: string;
   classname?: string;
   onClick?: () => void;
   disabled?: boolean;
 }
 
 const BaseButton = ({
-  label,
+  label_key,
   classname,
   onClick,
   disabled = false,
 }: IBaseButton) => {
+  const { t } = useTranslation();
   return (
     <button
       className={clsx(
@@ -22,7 +24,7 @@ const BaseButton = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {label}
+      {t(label_key)}
     </button>
   );
 };

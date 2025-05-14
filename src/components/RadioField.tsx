@@ -1,27 +1,29 @@
+import { useTranslation } from 'react-i18next';
 import InputLabel from './InputLabel';
 interface IRadioField {
-  label: string;
+  label_key: string;
   onChange: (value: string) => void;
   radioOptions: {
     id: string;
     name: string;
     value: string;
-    label: string;
+    label_key: string;
   }[];
   checked: string | undefined;
 }
 
 const RadioField = ({
-  label,
+  label_key,
   onChange,
   radioOptions,
   checked,
 }: IRadioField) => {
+  const { t } = useTranslation();
   return (
     <div>
-      {label && <InputLabel label={label} />}
+      {label_key && <InputLabel label={t(label_key)} />}
       <div className='flex gap-x-6'>
-        {radioOptions.map(({ id, name, value, label }) => (
+        {radioOptions.map(({ id, name, value, label_key }) => (
           <div key={id}>
             <input
               type='radio'
@@ -33,7 +35,7 @@ const RadioField = ({
               onChange={(e) => onChange(e.target.value)}
               checked={checked === value}
             />
-            <label htmlFor={id}>{label}</label>
+            <label htmlFor={id}>{t(label_key)}</label>
           </div>
         ))}
       </div>

@@ -5,8 +5,10 @@ import useViewUser from '../../../reactQuery/hooks/user/userViewUser';
 import useUserStore from '../../../stores/useUserStore';
 import { axiosInstance } from '../../../reactQuery/services/apiClient';
 import useAlertMessage from '../../../hooks/userAlertMessage';
+import { useTranslation } from 'react-i18next';
 
 const Follow = ({ userId }: { userId: string | undefined }) => {
+  const { t } = useTranslation();
   const { userInfo } = useUserStore();
   const { data } = useViewUser(userId);
   const queryClient = useQueryClient();
@@ -31,7 +33,7 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] });
     },
-    onError: () => setMessage('Unable to follow user'),
+    onError: () => setMessage(t('message.unableFollow')),
   });
 
   const { mutateAsync: unfollow, isPending: unfollowPending } = useMutation({
@@ -44,7 +46,7 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userId] });
     },
-    onError: () => setMessage('Unable to unfollow user'),
+    onError: () => setMessage(t('message.unableFollow')),
   });
 
   return (
@@ -55,11 +57,13 @@ const Follow = ({ userId }: { userId: string | undefined }) => {
         </div>
         <div className='text-left p-4'>
           <h4>{data.username}</h4>
-          <small>{data.followers.length} followers</small>
+          <small>
+            {data.followers.length} {t('followers')}
+          </small>
         </div>
         <div className='ml-auto p-4'>
           <BaseButton
-            label={isFollowed ? '停止追蹤' : '追蹤'}
+            label_key={isFollowed ? 'unfollow' : 'follow'}
             classname='!text-black bg-sunshine px-8 py-2'
             disabled={followPending || unfollowPending}
             onClick={isFollowed ? unfollow : follow}

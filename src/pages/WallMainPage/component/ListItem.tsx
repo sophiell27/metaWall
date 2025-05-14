@@ -10,7 +10,9 @@ import { BsThreeDots } from 'react-icons/bs';
 import useItemMenu from '../../../hooks/useItemMenu';
 import { useState } from 'react';
 import useUserStore from '../../../stores/useUserStore';
+import { useTranslation } from 'react-i18next';
 const ListItem = ({ item }: { item: IPost }) => {
+  const { t } = useTranslation();
   const { ItemMenu, setIsOpen } = useItemMenu();
   const { userInfo } = useUserStore();
   const { user, createdAt, content, imageUrl, likes, _id } = item;
@@ -66,7 +68,7 @@ const ListItem = ({ item }: { item: IPost }) => {
     onError: () => {
       setHasLiked(false);
       setLikeCount(likeCount - 1);
-      setMessage('something went wrong');
+      setMessage(t(''));
     },
   });
   const { mutateAsync: unlike } = useMutation({
@@ -99,7 +101,7 @@ const ListItem = ({ item }: { item: IPost }) => {
     onError: () => {
       setHasLiked(true);
       setLikeCount(likeCount + 1);
-      setMessage('something went wrong');
+      setMessage(t('message.generalError'));
     },
   });
 
@@ -119,14 +121,14 @@ const ListItem = ({ item }: { item: IPost }) => {
       },
       onError: () => {
         console.log('delete error');
-        setMessage('something went wrong');
+        setMessage(t('message.generalError'));
       },
     },
   );
 
   const ACTIONS = [
     {
-      name: '刪除',
+      name: t('delete'),
       onClick: deletePost,
     },
   ];

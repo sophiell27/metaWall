@@ -4,8 +4,10 @@ import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../reactQuery/services/apiClient';
 import { useNavigate } from 'react-router-dom';
 import useAlertMessage from '../../hooks/userAlertMessage';
+import { useTranslation } from 'react-i18next';
 
 const NewPostPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setMessage, AlertMessage } = useAlertMessage();
   const [post, setPost] = useState({
@@ -29,7 +31,7 @@ const NewPostPage = () => {
         },
       ),
     onSuccess: () => navigate('/'),
-    onError: () => setMessage('unable to create new post'),
+    onError: () => setMessage(t('message.unablePost')),
   });
 
   const handleSumbit = () => {
@@ -41,10 +43,10 @@ const NewPostPage = () => {
   return (
     <div className=''>
       <AlertMessage />
-      <SectionTitle title='張貼動態' />
+      <SectionTitle title={t('createPost')} />
       <div className='itemWrapper p-8'>
         <div className='mb-4  text-left'>
-          <p className='mb-1 '>貼文內容</p>
+          <p className='mb-1 '>{t('content')}</p>
           <textarea
             className='defaultBg themeBorder py-3 px-4 w-full h-[169px]'
             value={post.content}
@@ -58,7 +60,7 @@ const NewPostPage = () => {
         </div>
         <div className=' text-left'>
           <button className='rounded-md py-2 px-8 bg-black text-white mb-4'>
-            上傳圖片
+            {t('uploadImg')}
           </button>
           {post.imageUrl && (
             <img
@@ -69,12 +71,12 @@ const NewPostPage = () => {
           )}
         </div>
         <button
-          className='bg-sunshine shadow-listItem themeBorder rounded-default py-4 px-[130px] mx-auto self-center disabled:bg-darkGrey active:shadow-none '
+          className='bg-sunshine shadow-listItem themeBorder rounded-default py-4 px-[130px] mx-auto self-center disabled:bg-darkGrey active:shadow-none disabled:active:shadow-listItem'
           onClick={handleSumbit}
           type='button'
           disabled={!post.content}
         >
-          送出貼文
+          {t('sendPost')}
         </button>
       </div>
     </div>

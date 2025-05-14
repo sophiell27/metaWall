@@ -8,9 +8,11 @@ import BaseButton from '../../components/BaseButton';
 import loginImage from '../../assets/images/loginImg.svg';
 import axios from 'axios';
 import ErrorMessage from '../../components/ErrorMessage';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -39,29 +41,27 @@ const LoginPage = () => {
         <img src={loginImage} alt='' />
         <div className=''>
           <h1 className='text-60px text-navy font-extrabold'>MetaWall</h1>
-          <h3 className='mb-9 font-bold'>到元宇宙展開全新社交圈</h3>
+          <h3 className='mb-9 font-bold'>{t('welcome_message')}</h3>
           <div className='flex flex-col gap-y-4 mb-8'>
             <InputField
               type='email'
               onChange={(event) => setEmail(event.target.value)}
               value={email}
-              placeholder='email'
+              placeholder={t('email')}
             />
             <InputField
               type='password'
               onChange={(event) => setPassword(event.target.value)}
               value={password}
-              placeholder='password'
-              errorMessage={
-                password && password.length < 8
-                  ? 'password must be at least 8 characters'
-                  : ''
+              placeholder={t('password')}
+              errorMessage_key={
+                password && password.length < 8 ? 'passwordLength' : ''
               }
             />
           </div>
           <ErrorMessage errorMessage={error} />
           <BaseButton
-            label='登入'
+            label_key='login'
             classname='mb-4'
             onClick={mutateAsync}
             disabled={!email || !password || password.length < 8 || isPending}

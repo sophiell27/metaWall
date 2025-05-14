@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../reactQuery/services/apiClient';
 import { AxiosError } from 'axios';
 import useAlertMessage from '../../hooks/userAlertMessage';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   user: IUser | undefined;
@@ -15,11 +16,12 @@ interface IProps {
 }
 
 const RADIO_OPTIONS = [
-  { id: 'male', name: 'gender', value: 'male', label: '男性' },
-  { id: 'female', name: 'gender', value: 'female', label: '女性' },
+  { id: 'male', name: 'gender', value: 'male', label_key: 'male' },
+  { id: 'female', name: 'gender', value: 'female', label_key: 'female' },
 ];
 
 const UpdateProfile = ({ user, refetchUser }: IProps) => {
+  const { t } = useTranslation();
   const { setMessage, AlertMessage } = useAlertMessage();
   const initialValue = {
     username: user?.username || '',
@@ -58,7 +60,7 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
     onSuccess: async () => {
       refetchUser();
     },
-    onError: () => setMessage('unable to upload image'),
+    onError: () => setMessage(t('message.unableImg')),
   });
   const { mutateAsync: changeInfo } = useMutation<any, AxiosError>({
     mutationFn: () => {
@@ -79,7 +81,7 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
     onSuccess: async () => {
       refetchUser();
     },
-    onError: () => setMessage('unable to change info'),
+    onError: () => setMessage(t('message.unableChangeInfo')),
   });
 
   return (
@@ -104,10 +106,10 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
               }))
             }
             value={data.username}
-            label='暱稱'
+            label_key='nickname'
           />
           <RadioField
-            label='性別'
+            label_key='gender'
             onChange={handleChangeGender}
             radioOptions={RADIO_OPTIONS}
             checked={data.gender || undefined}
@@ -115,11 +117,11 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
         </div>
       </div>
 
-      <p className='errorMessage'>1.圖片寬高比必需為 1:1，請重新輸入</p>
-      <p className='errorMessage'> 2. 解析度寬度至少 300像素以上，請重新輸入</p>
+      <p className='errorMessage'>1. {t('message.imgWarning1')}</p>
+      <p className='errorMessage'> 2. {t('message.imgWarning2')}</p>
       <BaseButton
         classname='mt-4'
-        label='送出更新'
+        label_key='sendUpdate'
         disabled={
           !data.username ||
           JSON.stringify(initialValue) === JSON.stringify(data)

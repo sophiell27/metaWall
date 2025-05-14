@@ -4,8 +4,10 @@ import BaseButton from '../../components/BaseButton';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '../../reactQuery/services/apiClient';
 import useAlertMessage from '../../hooks/userAlertMessage';
+import { useTranslation } from 'react-i18next';
 
 const UpdatePassword = () => {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { setMessage, AlertMessage } = useAlertMessage();
@@ -30,7 +32,7 @@ const UpdatePassword = () => {
       setPassword('');
       setConfirmPassword('');
     },
-    onError: () => setMessage('unable to update password'),
+    onError: () => setMessage(t('message.unableUpdatePassword')),
   });
   return (
     <>
@@ -40,19 +42,19 @@ const UpdatePassword = () => {
           type='password'
           onChange={(e) => setPassword(e.target.value)}
           value={password}
-          placeholder='請輸入新密碼'
-          label='輸入新密碼'
+          placeholder={t('insertNewPasswordPls')}
+          label_key='insertNewPassword'
         />
         <InputField
           type='password'
           onChange={(e) => setConfirmPassword(e.target.value)}
           value={confirmPassword}
-          placeholder='再次輸入新密碼'
-          label='再次輸入'
+          placeholder={t('insertPasswordAgain')}
+          label_key='insertAgain'
         />
       </div>
       <BaseButton
-        label='重設密碼'
+        label_key='resetPassword'
         disabled={Boolean(
           password !== confirmPassword ||
             !password ||

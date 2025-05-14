@@ -11,7 +11,7 @@ const useAlertMessage = () => {
           <div className='z-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit px-10 py-3 bg-gold rounded-3xl  themeBorder'>
             <p className='mb-3'>{message}</p>
             <BaseButton
-              label='OK'
+              label_key='OK'
               onClick={() => setMessage('')}
               classname='shadow-none bg-transparent active:opacity-50'
             />

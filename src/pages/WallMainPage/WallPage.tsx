@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Follow from './component/Follow';
 import useUserStore from '../../stores/useUserStore';
-const OPTIONS = ['最新貼文', '最舊貼文'];
+const OPTIONS_KEY = ['newestPost', 'oldestPost'];
 const WallPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [keyword, setKeyWord] = useState('');
@@ -22,7 +22,7 @@ const WallPage = () => {
       {userId !== userInfo?._id && <Follow userId={userId} />}
       <section className='grid grid-cols-[1fr_4fr] gap-x-6'>
         <Select
-          options={OPTIONS}
+          option_keys={OPTIONS_KEY}
           selectedIndex={selectedIndex}
           handleSelect={setSelectedIndex}
         />

@@ -34,7 +34,6 @@ async function fetchTranslations() {
   const header = rows[0];
   const data = rows.slice(1);
 
-  // const translations: Record<string, Record<string, string>> = {};
   const translations: Record<
     string,
     Record<string, string | Record<string, string>>
@@ -45,11 +44,9 @@ async function fetchTranslations() {
   });
 
   data.forEach((row) => {
-    // [key, , ]
     const key = row[0];
-    const isNested = key.includes('.');
+    const isNested = key?.includes('.');
     header.forEach((lang, idx) => {
-      //[key, en.zh]
       if (lang !== 'key') {
         if (isNested) {
           const [parentKey, childKey] = key.split('.');

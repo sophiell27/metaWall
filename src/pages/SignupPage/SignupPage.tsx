@@ -8,6 +8,7 @@ import { axiosInstance } from '../../reactQuery/services/apiClient';
 import loginImage from '../../assets/images/loginImg.svg';
 import axios from 'axios';
 import ErrorMessage from '../../components/ErrorMessage';
+import { useTranslation } from 'react-i18next';
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
+  const { t } = useTranslation();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: () =>
@@ -35,7 +37,7 @@ const SignupPage = () => {
         setError(error.response.data.message);
       } else {
         // Handle generic error
-        setError('Something went wrong. Please try again later.');
+        setError(t('message.generalError'));
       }
     },
   });
@@ -45,55 +47,60 @@ const SignupPage = () => {
       <div className='py-72px px-12 themeBorder shadowBlend bg-beige flex gap-x-12 justify-center'>
         <img src={loginImage} alt='' />
         <div className=''>
-          <h1 className='text-60px text-navy font-extrabold'>MetaWall</h1>
-          <h3 className='mb-9 font-bold'>註冊</h3>
+          <Link to='/'>
+            <h1 className='text-60px text-navy font-extrabold'>MetaWall</h1>
+          </Link>
+          <h3 className='mb-9 font-bold'>{t('register')}</h3>
           <div className='flex flex-col gap-y-4 mb-8'>
             <InputField
               type='text'
               onChange={(event) => setUsername(event.target.value)}
               value={username}
-              placeholder='暱稱'
-              errorMessage={!username ? 'username must not be empty' : ''}
+              placeholder={t('nickname')}
+              errorMessage_key={!username ? 'message.emptyName' : ''}
             />
             <InputField
               type='email'
               onChange={(event) => setEmail(event.target.value)}
               value={email}
-              placeholder='Email'
+              placeholder={t('email')}
             />
             <InputField
               type='password'
               onChange={(event) => setPassword(event.target.value)}
               value={password}
-              placeholder='Password'
-              errorMessage={
-                password && password.length < 8
-                  ? 'password must be at least 8 characters'
-                  : ''
+              placeholder={t('password')}
+              errorMessage_key={
+                password && password.length < 8 ? 'message.passwordLength' : ''
               }
             />
             <InputField
               type='password'
               onChange={(event) => setConfirmPassword(event.target.value)}
               value={confirmPassword}
-              placeholder='confirm password'
-              errorMessage={
+              placeholder={t('confirmPassword')}
+              errorMessage_key={
                 confirmPassword && confirmPassword !== password
-                  ? 'password not match'
+                  ? 'message.passwordNotmatch'
                   : ''
               }
             />
           </div>
           <ErrorMessage errorMessage={error} />
           <BaseButton
-            label='註冊'
+            label_key='register'
             classname='mb-4'
             onClick={mutateAsync}
             disabled={
-              !email || !password || !confirmPassword || !username || isPending
+              !email ||
+              !password ||
+              !confirmPassword ||
+              !username ||
+              isPending ||
+              confirmPassword !== password
             }
           />
-          <Link to='/login'>登入</Link>
+          <Link to='/login'>{t('login')}</Link>
         </div>
       </div>
     </WallWrapper>

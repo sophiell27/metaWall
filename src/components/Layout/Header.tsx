@@ -4,23 +4,24 @@ import Avatar from '../Avatar';
 import { useRef } from 'react';
 import useUserStore from '../../stores/useUserStore';
 import useClickOutside from '../../hooks/useClickOutside';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const { isLogin, userInfo, setLogin } = useUserStore();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const { setIsOpen, isOpen } = useClickOutside(menuRef);
-
+  const { t, i18n } = useTranslation();
   const ACTION_LIST = [
     {
-      title: '我的貼文牆',
+      title: t('myWall'),
       path: '/',
     },
     {
-      title: '修改個人資料',
+      title: t('updateInfo'),
       path: '/user/updateInfo',
     },
     {
-      title: '登出',
+      title: t('logout'),
       path: '/login',
       onClick: () => {
         setLogin(false);
@@ -28,13 +29,45 @@ const Header = () => {
       },
     },
   ];
+
+  const currentLanguage = i18n.language;
+
+  const languageList = [
+    {
+      name: 'ENG',
+      onClick: () => {
+        i18n.changeLanguage('en');
+      },
+      disabled: currentLanguage === 'en',
+    },
+    {
+      name: '中文',
+      onClick: () => {
+        i18n.changeLanguage('zh-TW');
+      },
+      disabled: currentLanguage === 'zh',
+    },
+  ];
+
   return (
     <>
       <header className=' p-2 borderBottom '>
         <div className='container flex justify-between items-center'>
-          <Link to='/' className='font-bold'>
-            MetalWall
-          </Link>
+          <div className='flex gap-x-2'>
+            <Link to='/' className='font-bold'>
+              MetalWall
+            </Link>
+            {languageList.map(({ name, onClick, disabled }) => (
+              <button
+                key={name}
+                onClick={onClick}
+                className='cursor-pointer text-sm text-navy hover:text-gray-400 disabled:text-gray-400 disabled:cursor-default'
+                disabled={disabled}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
           <div className='alignIcon'>
             {isLogin && userInfo ? (
               <div>
@@ -52,8 +85,8 @@ const Header = () => {
               </div>
             ) : (
               <>
-                <Link to='/signup'>註冊</Link>
-                <Link to='/login'>登入</Link>
+                <Link to='/signup'>{t('register')}</Link>
+                <Link to='/login'>{t('login')}</Link>
               </>
             )}
           </div>
