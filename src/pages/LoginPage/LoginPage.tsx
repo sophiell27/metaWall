@@ -61,7 +61,7 @@ const LoginPage = () => {
         onClick={mutateAsync}
         disabled={!email || !password || password.length < 8 || isPending}
       />
-      <Link to='/signup'>註冊帳號</Link>
+      <Link to='/signup'>{t('registerAccount')}</Link>
     </AuthWrapper>
   );
 };
