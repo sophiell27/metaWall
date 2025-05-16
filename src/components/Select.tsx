@@ -15,12 +15,11 @@ const Select = ({ handleSelect, selectedIndex, option_keys }: ISelect) => {
   return (
     <div className='flex-1'>
       <div className='flex flex-col relative'>
-        {!isOpen ? (
-          <div className='field alignIcon' onClick={() => setIsOpen(true)}>
-            <p>{t(option_keys[selectedIndex])}</p>
-            <FaChevronDown />
-          </div>
-        ) : (
+        <div className='field alignIcon' onClick={() => setIsOpen(true)}>
+          <p>{t(option_keys[selectedIndex])}</p>
+          <FaChevronDown />
+        </div>
+        {isOpen && (
           <div
             className='absolute flex flex-col field gap-y-3 w-full'
             ref={selectRef}

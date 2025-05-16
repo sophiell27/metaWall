@@ -1,27 +1,20 @@
 import clsx from 'clsx';
 import { ReactNode } from 'react';
-
+import { twMerge } from 'tailwind-merge';
 const Avatar = ({
-  size = 'h-7 w-7',
-  borderColorClass = 'themeBorder',
-  textColorClass,
-  backgroundColorClass = 'defaultBg',
+  className,
   children,
 }: {
-  size?: string;
-  borderColorClass?: string;
-  textColorClass?: string;
-  backgroundColorClass?: string;
+  className?: string;
   children?: ReactNode;
 }) => {
   return (
     <div
-      className={clsx(
-        'rounded-full border-2 overflow-hidden flex justify-center items-center ',
-        size,
-        borderColorClass,
-        textColorClass,
-        backgroundColorClass,
+      className={twMerge(
+        clsx(
+          'rounded-full border-2 overflow-hidden flex justify-center items-center h-7 w-7 themeBorder defautlBg',
+          className,
+        ),
       )}
     >
       {children}

@@ -7,6 +7,8 @@ import useUserStore from '../stores/useUserStore';
 import { useEffect } from 'react';
 import BaseButton from './BaseButton';
 import { useTranslation } from 'react-i18next';
+import { IoMdAdd } from 'react-icons/io';
+import { IoHomeOutline } from 'react-icons/io5';
 const SideMenu = () => {
   const { t } = useTranslation();
   const { setUserInfo } = useUserStore();
@@ -20,6 +22,7 @@ const SideMenu = () => {
       title_key: data?.username || '',
       onClick: () => {},
       imageUrl: data?.imageUrl,
+      Icon: <IoHomeOutline />,
     },
     {
       title_key: 'followList',
@@ -33,29 +36,25 @@ const SideMenu = () => {
     },
   ];
   return (
-    <div className='py-8 px-6 themeBorder bg-white'>
-      <Link to='/newPost'>
-        <BaseButton label_key='createPost' classname='mb-6' />
+    <div className='h-16 themeBorder !border-[3px] bg-beige fixed bottom-0 left-10 right-10 rounded-full z-50 flex gap-x-4 flex-row-reverse justify-center items-center lg:flex-col lg:gap-y-22px lg:static lg:justify-start lg:items-start lg:z-0 lg:self-start lg:py-8 lg:px-6 lg:bg-white lg:rounded-none lg:h-auto lg:border-2'>
+      <Link to='/newPost' className='hidden lg:w-full lg:mb-6 lg:block'>
+        <BaseButton label_key='createPost' />
+        <Avatar className='iconSize bg-navy text-black border-black buttonHover lg:hidden'>
+          <IoMdAdd className='text-4xl text-black ' />
+        </Avatar>
       </Link>
-      <div className='flex flex-col gap-y-22px'>
-        {list.map(({ imageUrl, Icon, title_key, onClick }, index) => (
-          <div
-            className='flex items-center gap-x-4 cursor-pointer'
-            key={index}
-            onClick={onClick}
-          >
-            <Avatar
-              size='w-50px h-50px'
-              borderColorClass='border-navy'
-              backgroundColorClass='bg-babyBlue'
-              textColorClass='text-navy'
-            >
-              {Icon ? Icon : imageUrl && <Photo imageUrl={imageUrl} />}
-            </Avatar>
-            <p>{t(title_key)}</p>
-          </div>
-        ))}
-      </div>
+      {list.map(({ imageUrl, Icon, title_key, onClick }, index) => (
+        <div
+          className='flex items-center gap-x-4 cursor-pointer'
+          key={index}
+          onClick={onClick}
+        >
+          <Avatar className='iconWrapper'>
+            {imageUrl ? <Photo imageUrl={imageUrl} /> : Icon}
+          </Avatar>
+          <p className='hidden lg:block'>{t(title_key)}</p>
+        </div>
+      ))}
     </div>
   );
 };

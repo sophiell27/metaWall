@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { twMerge } from 'tailwind-merge';
 
 interface IBaseButton {
   label_key: string;
@@ -17,9 +18,11 @@ const BaseButton = ({
   const { t } = useTranslation();
   return (
     <button
-      className={clsx(
-        'w-full py-4 bg-navy text-white rounded-default shadow-button border-2 border-black ml-[2.5px] disabled:bg-fogBlue disabled:border-2 disabled:border-darkGrey  disabled:shadow-none active:shadow-none',
-        classname,
+      className={twMerge(
+        clsx(
+          'w-full py-4 bg-navy text-white rounded-default shadow-button buttonHover border-2 border-black ml-[2.5px] disabled:bg-fogBlue disabled:border-2 disabled:border-darkGrey disabled:shadow-none active:shadow-none',
+          classname,
+        ),
       )}
       onClick={onClick}
       disabled={disabled}

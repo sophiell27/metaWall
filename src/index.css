@@ -12,6 +12,16 @@
     .themeBorder {
         @apply border-2 border-black;
     }
+    .buttonHover {
+        @apply hover:bg-gold hover:text-black
+
+    }
+    .iconSize {
+        @apply w-10 h-10 lg:w-50px lg:h-50px;
+    }
+    .iconWrapper {
+        @apply buttonHover iconSize border-navy bg-babyBlue text-navy;
+    }
     .field {
         @apply defaultBg themeBorder p-3;
     }

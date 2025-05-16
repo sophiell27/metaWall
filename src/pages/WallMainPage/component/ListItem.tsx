@@ -138,7 +138,7 @@ const ListItem = ({ item }: { item: IPost }) => {
   ) : (
     <div className='p-6 itemWrapper'>
       <div className='flex items-center gap-x-3 mb-4'>
-        <Photo size='h-11 w-11'>
+        <Photo className='h-11 w-11 cursor-pointer'>
           {user.imageUrl && (
             <img
               src={user.imageUrl}

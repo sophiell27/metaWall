@@ -18,9 +18,9 @@ const WallPage = () => {
   const { userInfo } = useUserStore();
 
   return (
-    <div className=''>
+    <div>
       {userId !== userInfo?._id && <Follow userId={userId} />}
-      <section className='grid grid-cols-[1fr_4fr] gap-x-6'>
+      <section className='grid gap-y-2 lg:grid-cols-[1fr_3fr] lg:gap-x-6 lg:gap-y-0'>
         <Select
           option_keys={OPTIONS_KEY}
           selectedIndex={selectedIndex}

@@ -85,10 +85,10 @@ const UpdateProfile = ({ user, refetchUser }: IProps) => {
   });
 
   return (
-    <div>
+    <div className=''>
       <AlertMessage />
       <div className='flex flex-col items-center'>
-        <Avatar size='w-[108px] h-[108px]'>
+        <Avatar className='iconSize lg:w-[108px] lg:h-[108px]'>
           <img src={user?.imageUrl} alt='' />
         </Avatar>
         <input

@@ -51,7 +51,7 @@ const Header = () => {
 
   return (
     <>
-      <header className=' p-2 borderBottom '>
+      <header className='py-2 borderBottom'>
         <div className='container flex justify-between items-center'>
           <div className='flex gap-x-2'>
             <Link to='/' className='font-bold'>
@@ -91,29 +91,29 @@ const Header = () => {
             )}
           </div>
         </div>
+        {isOpen && (
+          <div className='relative z-10 container'>
+            <ul
+              ref={menuRef}
+              className='absolute right-4 top-1 grid grid-cols-1 divide-y-2 divide-black shadowBorder-r themeBorder'
+            >
+              {ACTION_LIST.map(({ title, path, onClick }) => (
+                <Link
+                  className='py-2 px-12 bg-white buttonHover'
+                  key={path}
+                  to={path}
+                  onClick={() => {
+                    setIsOpen(false);
+                    onClick && onClick();
+                  }}
+                >
+                  {title}
+                </Link>
+              ))}
+            </ul>
+          </div>
+        )}
       </header>
-      {isOpen && (
-        <div className='relative z-10'>
-          <ul
-            ref={menuRef}
-            className='absolute right-0 -translate-x-1/2 -top-[5px] grid grid-cols-1 divide-y-2 divide-black shadowBorder-r themeBorder'
-          >
-            {ACTION_LIST.map(({ title, path, onClick }) => (
-              <Link
-                className='py-2 px-12 bg-white'
-                key={path}
-                to={path}
-                onClick={() => {
-                  setIsOpen(false);
-                  onClick && onClick();
-                }}
-              >
-                {title}
-              </Link>
-            ))}
-          </ul>
-        </div>
-      )}
     </>
   );
 };
