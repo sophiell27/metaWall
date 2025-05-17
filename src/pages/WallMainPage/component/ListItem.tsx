@@ -17,7 +17,7 @@ const ListItem = ({ item }: { item: IPost }) => {
   const { userInfo } = useUserStore();
   const { user, createdAt, content, imageUrl, likes, _id } = item;
   const [hasLiked, setHasLiked] = useState<boolean>(
-    likes.findIndex((like) => like === user._id) >= 0,
+    likes.findIndex((like) => like === userInfo?._id) >= 0,
   );
   const [likeCount, setLikeCount] = useState<number>(likes.length);
   const navigate = useNavigate();
