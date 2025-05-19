@@ -9,12 +9,27 @@ import BaseButton from './BaseButton';
 import { useTranslation } from 'react-i18next';
 import { IoMdAdd } from 'react-icons/io';
 import { IoHomeOutline } from 'react-icons/io5';
+import {
+  disconnectSocket,
+  initiateSocketConnection,
+  subscribeToLikes,
+} from '../services/socket';
 const SideMenu = () => {
   const { t } = useTranslation();
   const { setUserInfo } = useUserStore();
   const { data } = useUser();
   useEffect(() => {
     setUserInfo(data);
+    if (data?._id) {
+      initiateSocketConnection(data?._id);
+      subscribeToLikes((scoketData) => {
+        console.log('socketData', scoketData);
+        // alert(`Your post was liked by ${scoketData.username}`);
+      });
+    }
+    return () => {
+      disconnectSocket();
+    };
   }, [data, setUserInfo]);
 
   const list = [

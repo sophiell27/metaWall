@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Follow from './component/Follow';
 import useUserStore from '../../stores/useUserStore';
+
 const OPTIONS_KEY = ['newestPost', 'oldestPost'];
 const WallPage = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
