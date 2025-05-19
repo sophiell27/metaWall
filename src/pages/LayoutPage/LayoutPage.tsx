@@ -1,24 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../../components/Layout/Header';
 import WallWrapper from '../../components/WallWrapper';
-import { isTokenExpired } from './util';
-import { useEffect } from 'react';
-import useUserStore from '../../stores/useUserStore';
+import useAuthStore from '../../stores/useAuthStore';
 
 const LayoutPage = () => {
-  const { setLogin, isLogin } = useUserStore();
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = window.sessionStorage.getItem('token');
-      if (token) {
-        const isExpired = isTokenExpired(token);
-        if (!isExpired) {
-          setLogin(true);
-        }
-      }
-    };
-    checkAuth();
-  }, [setLogin]);
+  const { isLogin } = useAuthStore();
+
   return (
     <>
       <Header />

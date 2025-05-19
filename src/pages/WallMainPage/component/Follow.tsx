@@ -2,14 +2,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import BaseButton from '../../../components/BaseButton';
 import Photo from '../../../components/Photo';
 import useViewUser from '../../../reactQuery/hooks/user/userViewUser';
-import useUserStore from '../../../stores/useUserStore';
 import { axiosInstance } from '../../../reactQuery/services/apiClient';
 import useAlertMessage from '../../../hooks/userAlertMessage';
 import { useTranslation } from 'react-i18next';
+import useCachedUser from '../../../reactQuery/hooks/user/useCachedUser';
+import { IUser } from '../../../types';
 
 const Follow = ({ userId }: { userId: string | undefined }) => {
   const { t } = useTranslation();
-  const { userInfo } = useUserStore();
+  const userInfo: IUser | undefined = useCachedUser();
   const { data } = useViewUser(userId);
   const queryClient = useQueryClient();
   const { AlertMessage, setMessage } = useAlertMessage();

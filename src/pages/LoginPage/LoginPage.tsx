@@ -8,6 +8,7 @@ import axios from 'axios';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '../../components/Layout/AuthWrapper';
+import useAuthStore from '../../stores/useAuthStore';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuthStore();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: () => axiosInstance.post('/users/sign_in', { email, password }),
     onSuccess: (res) => {
-      sessionStorage.setItem('token', res.data.token);
-      sessionStorage.setItem('id', res.data.id);
+      login(res.data.token, res.data.id);
       navigate('/');
     },
     onError: (error) => {

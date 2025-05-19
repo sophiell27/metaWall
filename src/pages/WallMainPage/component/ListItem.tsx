@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { IPost } from '../../../types';
+import { IPost, IUser } from '../../../types';
 import Photo from '../../../components/Avatar';
 import { AiOutlineLike } from 'react-icons/ai';
 import { AiFillLike } from 'react-icons/ai';
@@ -9,12 +9,12 @@ import useAlertMessage from '../../../hooks/userAlertMessage';
 import { BsThreeDots } from 'react-icons/bs';
 import useItemMenu from '../../../hooks/useItemMenu';
 import { useState } from 'react';
-import useUserStore from '../../../stores/useUserStore';
 import { useTranslation } from 'react-i18next';
+import useCachedUser from '../../../reactQuery/hooks/user/useCachedUser';
 const ListItem = ({ item }: { item: IPost }) => {
   const { t } = useTranslation();
   const { ItemMenu, setIsOpen } = useItemMenu();
-  const { userInfo } = useUserStore();
+  const userInfo: IUser | undefined = useCachedUser();
   const { user, createdAt, content, imageUrl, likes, _id } = item;
   const [hasLiked, setHasLiked] = useState<boolean>(
     likes.findIndex((like) => like === userInfo?._id) >= 0,

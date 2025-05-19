@@ -2,8 +2,6 @@ import { FaRegThumbsUp, FaRegBell } from 'react-icons/fa';
 import Avatar from './Avatar';
 import Photo from './Photo';
 import { Link } from 'react-router-dom';
-import useUser from '../reactQuery/hooks/user/useUser';
-import useUserStore from '../stores/useUserStore';
 import { useEffect } from 'react';
 import BaseButton from './BaseButton';
 import { useTranslation } from 'react-i18next';
@@ -14,14 +12,15 @@ import {
   initiateSocketConnection,
   subscribeToLikes,
 } from '../services/socket';
+import useCachedUser from '../reactQuery/hooks/user/useCachedUser';
+import { IUser } from '../types';
 const SideMenu = () => {
   const { t } = useTranslation();
-  const { setUserInfo } = useUserStore();
-  const { data } = useUser();
+
+  const userInfo: IUser | undefined = useCachedUser();
   useEffect(() => {
-    setUserInfo(data);
-    if (data?._id) {
-      initiateSocketConnection(data?._id);
+    if (userInfo?._id) {
+      initiateSocketConnection(userInfo?._id);
       subscribeToLikes((scoketData) => {
         console.log('socketData', scoketData);
         // alert(`Your post was liked by ${scoketData.username}`);
@@ -30,13 +29,13 @@ const SideMenu = () => {
     return () => {
       disconnectSocket();
     };
-  }, [data, setUserInfo]);
+  }, [userInfo?._id]);
 
   const list = [
     {
-      title_key: data?.username || '',
+      title_key: userInfo?.username || '',
       onClick: () => {},
-      imageUrl: data?.imageUrl,
+      imageUrl: userInfo?.imageUrl,
       Icon: <IoHomeOutline />,
     },
     {

@@ -6,7 +6,8 @@ import usePosts from '../../reactQuery/hooks/post/usePosts';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Follow from './component/Follow';
-import useUserStore from '../../stores/useUserStore';
+import useCachedUser from '../../reactQuery/hooks/user/useCachedUser';
+import { IUser } from '../../types';
 
 const OPTIONS_KEY = ['newestPost', 'oldestPost'];
 const WallPage = () => {
@@ -16,7 +17,7 @@ const WallPage = () => {
   const timeSort = selectedIndex === 0 ? 'desc' : 'asc';
   const { userId } = useParams();
   const { data } = usePosts(timeSort, keyword, userId);
-  const { userInfo } = useUserStore();
+  const userInfo: IUser | undefined = useCachedUser();
 
   return (
     <div>

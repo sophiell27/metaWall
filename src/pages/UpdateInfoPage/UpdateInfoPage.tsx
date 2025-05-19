@@ -6,13 +6,17 @@ import UpdateProfile from './UpdateProfile';
 import useUser from '../../reactQuery/hooks/user/useUser';
 import { IUser } from '../../types';
 import { useTranslation } from 'react-i18next';
+import useAuthStore from '../../stores/useAuthStore';
+import useCachedUser from '../../reactQuery/hooks/user/useCachedUser';
 
 const UpdateInfoPage = () => {
   const { t } = useTranslation();
   const [tabIndex, setTabIndex] = useState(0);
   const tabs_key = ['changeNickname', 'resetPassword'];
+  const { isLogin } = useAuthStore();
+  const userInfo: IUser | undefined = useCachedUser();
 
-  const { data, refetch } = useUser();
+  const { refetch } = useUser(isLogin);
 
   return (
     <div className=''>
@@ -36,10 +40,7 @@ const UpdateInfoPage = () => {
         </div>
         <div className='itemWrapper mx-auto py-7 px-[105px]'>
           {tabIndex === 0 ? (
-            <UpdateProfile
-              user={data as unknown as IUser}
-              refetchUser={refetch}
-            />
+            <UpdateProfile user={userInfo} refetchUser={refetch} />
           ) : (
             <UpdatePassword />
           )}

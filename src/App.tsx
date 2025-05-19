@@ -9,23 +9,25 @@ import { ReactNode, useEffect } from 'react';
 import { isTokenExpired } from './pages/LayoutPage/util';
 import UpdateInfoPage from './pages/UpdateInfoPage/UpdateInfoPage';
 import NewPostPage from './pages/WallMainPage/NewPostPage';
-import useUserStore from './stores/useUserStore';
+import useAuthStore from './stores/useAuthStore';
+import useUser from './reactQuery/hooks/user/useUser';
 
 function App() {
-  const { setLogin, isLogin } = useUserStore();
-
+  const { login, isLogin } = useAuthStore();
+  useUser(isLogin);
   useEffect(() => {
     const checkAuth = () => {
       const token = window.sessionStorage.getItem('token');
-      if (token) {
+      const id = window.sessionStorage.getItem('id');
+      if (token && id) {
         const isExpired = isTokenExpired(token);
         if (!isExpired) {
-          setLogin(true);
+          login(token, id);
         }
       }
     };
     checkAuth();
-  }, [setLogin]);
+  }, [login]);
 
   return (
     <Routes>

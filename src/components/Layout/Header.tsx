@@ -2,15 +2,21 @@ import { Link } from 'react-router-dom';
 import Photo from '../Photo';
 import Avatar from '../Avatar';
 import { useRef } from 'react';
-import useUserStore from '../../stores/useUserStore';
 import useClickOutside from '../../hooks/useClickOutside';
 import { useTranslation } from 'react-i18next';
+import useAuthStore from '../../stores/useAuthStore';
+import { IUser } from '../../types';
+import useCachedUser from '../../reactQuery/hooks/user/useCachedUser';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Header = () => {
-  const { isLogin, userInfo, setLogin } = useUserStore();
+  const { isLogin } = useAuthStore();
+  const userInfo: IUser | undefined = useCachedUser();
+  const { logout } = useAuthStore();
   const menuRef = useRef<HTMLUListElement | null>(null);
   const { setIsOpen, isOpen } = useClickOutside(menuRef);
   const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
   const ACTION_LIST = [
     {
       title: t('myWall'),
@@ -24,8 +30,8 @@ const Header = () => {
       title: t('logout'),
       path: '/login',
       onClick: () => {
-        setLogin(false);
-        window.sessionStorage.setItem('token', '');
+        logout();
+        queryClient.removeQueries({ queryKey: ['user'] });
       },
     },
   ];
@@ -76,10 +82,10 @@ const Header = () => {
                   onClick={() => setIsOpen(true)}
                 >
                   <Avatar>
-                    <Photo imageUrl={userInfo?.imageUrl || ''} />
+                    <Photo imageUrl={userInfo.imageUrl || ''} />
                   </Avatar>
                   <p className='pb-1 border-b-4 border-b-black '>
-                    {userInfo?.username}
+                    {userInfo.username}
                   </p>
                 </div>
               </div>
