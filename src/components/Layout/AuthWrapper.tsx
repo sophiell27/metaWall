@@ -2,7 +2,7 @@ import WallWrapper from '../WallWrapper';
 
 import loginImage from '../../assets/images/loginImg.svg';
 import { ReactNode } from 'react';
-import LanguageSwitcher from './languageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const AuthWrapper = ({ children }: { children: ReactNode }) => {
   return (
@@ -14,7 +14,7 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
           {children}
         </div>
       </div>
-      <div>
+      <div className='flex gap-x-4 py-4'>
         <LanguageSwitcher />
       </div>
     </WallWrapper>

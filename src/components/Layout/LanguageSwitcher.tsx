@@ -25,7 +25,7 @@ const LanguageSwitcher = () => {
         <button
           key={name}
           onClick={onClick}
-          className='cursor-pointer text-sm text-navy m-4  hover:text-gray-400 disabled:text-gray-400 disabled:cursor-default'
+          className='cursor-pointer text-sm text-navy hover:text-gray-400 disabled:text-gray-400 disabled:cursor-default'
           disabled={disabled}
         >
           {name}

@@ -10,7 +10,7 @@ import useNotificationStore from '../../stores/useNotificationStore';
 import { FaBell } from 'react-icons/fa';
 import Dropdown from './Dropdown';
 import NotificationItem from '../NotificationItem';
-import LanguageSwitcher from './languageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
   const { isLogin } = useAuthStore();
