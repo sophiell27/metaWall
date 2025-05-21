@@ -57,7 +57,7 @@ const LoginPage = () => {
           value={password}
           placeholder={t('password')}
           errorMessage_key={
-            password && password.length < 8 ? 'passwordLength' : ''
+            password && password.length < 8 ? 'message.passwordLength' : ''
           }
         />
       </div>
