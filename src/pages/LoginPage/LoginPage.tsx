@@ -9,6 +9,8 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { useTranslation } from 'react-i18next';
 import AuthWrapper from '../../components/Layout/AuthWrapper';
 import useAuthStore from '../../stores/useAuthStore';
+import useUser from '../../reactQuery/hooks/user/useUser';
+import useAutoAuth from '../../reactQuery/hooks/useAutoAuth';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -17,11 +19,15 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuthStore();
+  const { refetch } = useUser();
+
+  useAutoAuth();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: () => axiosInstance.post('/users/sign_in', { email, password }),
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       login(res.data.token, res.data.id);
+      await refetch();
       navigate('/');
     },
     onError: (error) => {

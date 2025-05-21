@@ -1,14 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
 import APIClient from '../../services/apiClient';
 import { IUser } from '../../../types';
+import useAuthStore from '../../../stores/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
-const useUser = (isLogin: boolean) => {
+const useUser = () => {
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
   const apiClient = new APIClient<IUser>('/users/profile');
 
-  return useQuery<IUser, Error>({
+  return useQuery<IUser | undefined, Error>({
     queryKey: ['user'],
-    queryFn: () => apiClient.get(),
-    enabled: isLogin,
+    queryFn: async () => {
+      try {
+        return await apiClient.get();
+      } catch {
+        logout();
+        navigate('/login');
+      }
+    },
+    enabled: false,
   });
 };
 export default useUser;

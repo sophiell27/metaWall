@@ -22,7 +22,7 @@ const UpdatePassword = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${window.sessionStorage.getItem('token')}`, // include the token in the Authorization header
+            Authorization: `Bearer ${sessionStorage.getItem('token')}`, // include the token in the Authorization header
           },
         },
       );

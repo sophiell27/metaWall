@@ -6,17 +6,15 @@ import UpdateProfile from './UpdateProfile';
 import useUser from '../../reactQuery/hooks/user/useUser';
 import { IUser } from '../../types';
 import { useTranslation } from 'react-i18next';
-import useAuthStore from '../../stores/useAuthStore';
 import useCachedUser from '../../reactQuery/hooks/user/useCachedUser';
 
 const UpdateInfoPage = () => {
   const { t } = useTranslation();
   const [tabIndex, setTabIndex] = useState(0);
   const tabs_key = ['changeNickname', 'resetPassword'];
-  const { isLogin } = useAuthStore();
   const userInfo: IUser | undefined = useCachedUser();
 
-  const { refetch } = useUser(isLogin);
+  const { refetch } = useUser();
 
   return (
     <div className=''>
