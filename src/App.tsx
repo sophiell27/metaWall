@@ -11,9 +11,19 @@ import UpdateInfoPage from './pages/UpdateInfoPage/UpdateInfoPage';
 import NewPostPage from './pages/WallMainPage/NewPostPage';
 import useAuthStore from './stores/useAuthStore';
 import useUser from './reactQuery/hooks/user/useUser';
+import useCachedUser from './reactQuery/hooks/user/useCachedUser';
+import {
+  disconnectSocket,
+  initiateSocketConnection,
+  subscribeToLikes,
+  subscribeToUnreadNotification,
+} from './services/socket';
+import useNotificationStore from './stores/useNotificationStore';
 
 function App() {
   const { login, isLogin } = useAuthStore();
+  const { setUnreadNotifications } = useNotificationStore();
+  const userInfo = useCachedUser();
   useUser(isLogin);
   useEffect(() => {
     const checkAuth = () => {
@@ -28,6 +38,23 @@ function App() {
     };
     checkAuth();
   }, [login]);
+
+  useEffect(() => {
+    if (userInfo?._id) {
+      initiateSocketConnection(userInfo?._id);
+      subscribeToLikes((scoketData) => {
+        console.log('socketData', scoketData);
+        // alert(`Your post was liked by ${scoketData.username}`);
+      });
+      subscribeToUnreadNotification((unreadNotifications) => {
+        console.log('unreadNotifications', unreadNotifications);
+        setUnreadNotifications(unreadNotifications);
+      });
+    }
+    return () => {
+      disconnectSocket();
+    };
+  }, [userInfo?._id, setUnreadNotifications]);
 
   return (
     <Routes>

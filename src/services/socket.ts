@@ -7,6 +7,14 @@ interface SocketData {
   username: string;
 }
 
+export interface UnreadNotificationData {
+  senderName: string;
+  createdAt: string;
+  postId: string;
+  senderId: string;
+  readStatus: boolean;
+}
+
 export const initiateSocketConnection = (userId: string) => {
   socket = io(import.meta.env.VITE_API_BASE_URL);
   console.log('Connecting socket...');
@@ -19,14 +27,19 @@ export const disconnectSocket = () => {
 
 export const subscribeToLikes = (callback: (data: SocketData) => void) => {
   if (!socket) return;
-
   socket.on('like-post', (data) => {
     console.log('Post liked event received!');
     callback(data);
   });
 };
 
-export const emitLikeEvent = (likeData: SocketData) => {
+export const subscribeToUnreadNotification = (
+  callback: (data: UnreadNotificationData[]) => void,
+) => {
   if (!socket) return;
-  socket.emit('like-post', likeData);
+
+  socket.on('unreadNotifications', (data) => {
+    console.log('Unread notification event received!');
+    callback(data);
+  });
 };

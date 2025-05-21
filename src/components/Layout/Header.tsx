@@ -1,33 +1,33 @@
 import { Link } from 'react-router-dom';
 import Photo from '../Photo';
 import Avatar from '../Avatar';
-import { useRef } from 'react';
-import useClickOutside from '../../hooks/useClickOutside';
 import { useTranslation } from 'react-i18next';
 import useAuthStore from '../../stores/useAuthStore';
 import { IUser } from '../../types';
 import useCachedUser from '../../reactQuery/hooks/user/useCachedUser';
 import { useQueryClient } from '@tanstack/react-query';
+import useNotificationStore from '../../stores/useNotificationStore';
+import { FaBell } from 'react-icons/fa';
+import Dropdown from './Dropdown';
 
 const Header = () => {
   const { isLogin } = useAuthStore();
   const userInfo: IUser | undefined = useCachedUser();
   const { logout } = useAuthStore();
-  const menuRef = useRef<HTMLUListElement | null>(null);
-  const { setIsOpen, isOpen } = useClickOutside(menuRef);
+  const { unreadNotifications } = useNotificationStore();
   const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
-  const ACTION_LIST = [
+  const MENU_LIST = [
     {
-      title: t('myWall'),
+      title_key: 'myWall',
       path: '/',
     },
     {
-      title: t('updateInfo'),
+      title_key: 'updateInfo',
       path: '/user/updateInfo',
     },
     {
-      title: t('logout'),
+      title_key: 'logout',
       path: '/login',
       onClick: () => {
         logout();
@@ -76,19 +76,84 @@ const Header = () => {
           </div>
           <div className='alignIcon'>
             {isLogin && userInfo ? (
-              <div>
-                <div
-                  className='alignIcon cursor-pointer'
-                  onClick={() => setIsOpen(true)}
+              <>
+                <Dropdown
+                  trigger={
+                    <>
+                      <div className='alignIcon cursor-pointer'>
+                        <Avatar>
+                          <Photo imageUrl={userInfo.imageUrl || ''} />
+                        </Avatar>
+                        <p className='pb-1 border-b-4 border-b-black '>
+                          {userInfo.username}
+                        </p>
+                      </div>
+                    </>
+                  }
                 >
-                  <Avatar>
-                    <Photo imageUrl={userInfo.imageUrl || ''} />
-                  </Avatar>
-                  <p className='pb-1 border-b-4 border-b-black '>
-                    {userInfo.username}
-                  </p>
-                </div>
-              </div>
+                  {({ close }) =>
+                    MENU_LIST.map(({ title_key, path, onClick }) => (
+                      <Link
+                        className='py-2 px-12 bg-white buttonHover block'
+                        key={path}
+                        to={path}
+                        onClick={() => {
+                          close();
+                          onClick && onClick();
+                        }}
+                      >
+                        {t(title_key)}
+                      </Link>
+                    ))
+                  }
+                </Dropdown>
+
+                <Dropdown
+                  trigger={
+                    <div className='flex'>
+                      <FaBell
+                        stroke='black'
+                        strokeWidth={50}
+                        className={`w-6 h-6  ${
+                          unreadNotifications && unreadNotifications.length > 0
+                            ? 'text-gold'
+                            : 'text-beige'
+                        }`}
+                      />
+                      {unreadNotifications &&
+                        unreadNotifications?.length > 0 && (
+                          <small className='w-5 h-5 rounded-full bg-red-500 font-bold flex justify-center items-center -ml-3 border-black border-2'>
+                            {unreadNotifications?.length}
+                          </small>
+                        )}
+                    </div>
+                  }
+                >
+                  {({ close }) =>
+                    unreadNotifications && unreadNotifications.length > 0 ? (
+                      unreadNotifications.map(
+                        ({ senderId, senderName, postId }, index) => (
+                          <div
+                            key={index}
+                            className='py-2 px-12 bg-white buttonHover block'
+                            onClick={close}
+                          >
+                            <Link to={`/${senderId}`} className='text-navy'>
+                              {senderName}{' '}
+                            </Link>
+                            {t('message.likeYour')}
+                            <Link to={`/post/${postId}`} className='text-navy'>
+                              {t('message.post')}
+                            </Link>
+                          </div>
+                        ),
+                      )
+                    ) : (
+                      <p className='cursor-default '>no notification</p>
+                    )
+                  }
+                </Dropdown>
+              </>
             ) : (
               <>
                 <Link to='/signup'>{t('register')}</Link>
@@ -97,28 +162,6 @@ const Header = () => {
             )}
           </div>
         </div>
-        {isOpen && (
-          <div className='relative z-10 container'>
-            <ul
-              ref={menuRef}
-              className='absolute right-4 top-1 grid grid-cols-1 divide-y-2 divide-black shadowBorder-r themeBorder'
-            >
-              {ACTION_LIST.map(({ title, path, onClick }) => (
-                <Link
-                  className='py-2 px-12 bg-white buttonHover'
-                  key={path}
-                  to={path}
-                  onClick={() => {
-                    setIsOpen(false);
-                    onClick && onClick();
-                  }}
-                >
-                  {title}
-                </Link>
-              ))}
-            </ul>
-          </div>
-        )}
       </header>
     </>
   );

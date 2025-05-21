@@ -45,6 +45,8 @@
     "unableChangeInfo": "Unable to change info",
     "unableUpdatePassword": "Unable to update password",
     "imgWarning1": "Image aspect ratio must be 1:1, please re-enter",
-    "imgWarning2": "The resolution width is at least 300 pixels, please re-enter"
+    "imgWarning2": "The resolution width is at least 300 pixels, please re-enter",
+    "likeYour": "likes your",
+    "post": " post"
   }
 }

@@ -45,6 +45,8 @@
     "unableChangeInfo": "無法修改個人資料",
     "unableUpdatePassword": "無法更新密碼",
     "imgWarning1": "圖片寬高比必需為 1:1，請重新輸入",
-    "imgWarning2": "解析度寬度至少 300像素以上，請重新輸入"
+    "imgWarning2": "解析度寬度至少 300像素以上，請重新輸入",
+    "likeYour": "讚好你的",
+    "post": "動態"
   }
 }
