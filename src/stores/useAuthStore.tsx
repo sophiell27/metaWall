@@ -1,9 +1,11 @@
 import { create } from 'zustand';
+import { isTokenExpired } from '../utils';
 
-const useUserStore = create<{
+const useAuthStore = create<{
   isLogin: boolean;
   login: (token: string, id: string) => void;
   logout: () => void;
+  checkAuth: () => boolean;
 }>((set) => ({
   isLogin: false,
   login: (token: string, id: string) => {
@@ -12,10 +14,21 @@ const useUserStore = create<{
     set({ isLogin: true });
   },
   logout: () => {
-    sessionStorage.setItem('token', '');
-    sessionStorage.setItem('id', '');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('id');
     set({ isLogin: false });
+  },
+  checkAuth: () => {
+    const token = sessionStorage.getItem('token');
+    const id = sessionStorage.getItem('id');
+    if (token && id && !isTokenExpired(token)) {
+      set({ isLogin: true });
+      return true;
+    } else {
+      set({ isLogin: false });
+      return false;
+    }
   },
 }));
 
-export default useUserStore;
+export default useAuthStore;
