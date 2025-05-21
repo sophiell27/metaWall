@@ -1,14 +1,14 @@
 import { create } from 'zustand';
-import { UnreadNotificationData } from '../services/socket';
+import { IUnreadNotificationData } from '../services/socket';
 
 const useNotificationStore = create<{
-  unreadNotifications: UnreadNotificationData[] | null;
+  unreadNotifications: IUnreadNotificationData[] | null;
   setUnreadNotifications: (
-    unreadNotifications: UnreadNotificationData[],
+    unreadNotifications: IUnreadNotificationData[],
   ) => void;
 }>((set) => ({
   unreadNotifications: null,
-  setUnreadNotifications: (unreadNotifications: UnreadNotificationData[]) => {
+  setUnreadNotifications: (unreadNotifications: IUnreadNotificationData[]) => {
     set({ unreadNotifications });
   },
 }));

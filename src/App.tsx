@@ -5,7 +5,7 @@ import WallMainPage from './pages/WallMainPage/WallMainPage';
 import WallPage from './pages/WallMainPage/WallPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import SignupPage from './pages/SignupPage/SignupPage';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useContext, useEffect } from 'react';
 import UpdateInfoPage from './pages/UpdateInfoPage/UpdateInfoPage';
 import NewPostPage from './pages/WallMainPage/NewPostPage';
 import useAuthStore from './stores/useAuthStore';
@@ -18,30 +18,34 @@ import {
 } from './services/socket';
 import useNotificationStore from './stores/useNotificationStore';
 import useAutoAuth from './reactQuery/hooks/useAutoAuth';
+import { ToastContext } from './contexts/ToastContext';
 
 function App() {
   const { isLogin } = useAuthStore();
   const { setUnreadNotifications } = useNotificationStore();
   const userInfo = useCachedUser();
 
+  const { addNotification } = useContext(ToastContext);
+
   useAutoAuth();
 
   useEffect(() => {
     if (userInfo?._id) {
       initiateSocketConnection(userInfo?._id);
-      subscribeToLikes((scoketData) => {
-        console.log('socketData', scoketData);
-        // alert(`Your post was liked by ${scoketData.username}`);
-      });
       subscribeToUnreadNotification((unreadNotifications) => {
         console.log('unreadNotifications', unreadNotifications);
         setUnreadNotifications(unreadNotifications);
+      });
+      subscribeToLikes((scoketData) => {
+        console.log('scoketData', scoketData);
+        addNotification(scoketData);
+        // alert(`Your post was liked by ${scoketData.senderName}`);
       });
     }
     return () => {
       disconnectSocket();
     };
-  }, [userInfo?._id, setUnreadNotifications]);
+  }, [userInfo?._id]);
 
   return (
     <Routes>

@@ -2,12 +2,13 @@ import { io, Socket } from 'socket.io-client';
 
 let socket: Socket;
 
-interface SocketData {
-  post_id: string;
-  username: string;
+export interface SocketData {
+  postId: string;
+  senderName: string;
+  senderId: string;
 }
 
-export interface UnreadNotificationData {
+export interface IUnreadNotificationData {
   senderName: string;
   createdAt: string;
   postId: string;
@@ -34,10 +35,9 @@ export const subscribeToLikes = (callback: (data: SocketData) => void) => {
 };
 
 export const subscribeToUnreadNotification = (
-  callback: (data: UnreadNotificationData[]) => void,
+  callback: (data: IUnreadNotificationData[]) => void,
 ) => {
   if (!socket) return;
-
   socket.on('unreadNotifications', (data) => {
     console.log('Unread notification event received!');
     callback(data);

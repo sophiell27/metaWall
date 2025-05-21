@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import useNotificationStore from '../../stores/useNotificationStore';
 import { FaBell } from 'react-icons/fa';
 import Dropdown from './Dropdown';
+import NotificationItem from '../NotificationItem';
 
 const Header = () => {
   const { isLogin } = useAuthStore();
@@ -97,7 +98,8 @@ const Header = () => {
                         className='py-2 px-12 bg-white buttonHover block'
                         key={path}
                         to={path}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           close();
                           onClick && onClick();
                         }}
@@ -136,15 +138,16 @@ const Header = () => {
                           <div
                             key={index}
                             className='py-2 px-12 bg-white buttonHover block'
-                            onClick={close}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              close();
+                            }}
                           >
-                            <Link to={`/${senderId}`} className='text-navy'>
-                              {senderName}{' '}
-                            </Link>
-                            {t('message.likeYour')}
-                            <Link to={`/post/${postId}`} className='text-navy'>
-                              {t('message.post')}
-                            </Link>
+                            <NotificationItem
+                              senderId={senderId}
+                              postId={postId}
+                              senderName={senderName}
+                            />
                           </div>
                         ),
                       )
