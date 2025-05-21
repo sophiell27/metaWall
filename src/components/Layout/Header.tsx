@@ -10,13 +10,14 @@ import useNotificationStore from '../../stores/useNotificationStore';
 import { FaBell } from 'react-icons/fa';
 import Dropdown from './Dropdown';
 import NotificationItem from '../NotificationItem';
+import LanguageSwitcher from './languageSwitcher';
 
 const Header = () => {
   const { isLogin } = useAuthStore();
   const userInfo: IUser | undefined = useCachedUser();
   const { logout } = useAuthStore();
   const { unreadNotifications } = useNotificationStore();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const MENU_LIST = [
     {
@@ -37,25 +38,6 @@ const Header = () => {
     },
   ];
 
-  const currentLanguage = i18n.language;
-
-  const languageList = [
-    {
-      name: 'ENG',
-      onClick: () => {
-        i18n.changeLanguage('en');
-      },
-      disabled: currentLanguage === 'en',
-    },
-    {
-      name: '中文',
-      onClick: () => {
-        i18n.changeLanguage('zh-TW');
-      },
-      disabled: currentLanguage === 'zh',
-    },
-  ];
-
   return (
     <>
       <header className='py-2 borderBottom'>
@@ -64,16 +46,7 @@ const Header = () => {
             <Link to='/' className='font-bold'>
               MetalWall
             </Link>
-            {languageList.map(({ name, onClick, disabled }) => (
-              <button
-                key={name}
-                onClick={onClick}
-                className='cursor-pointer text-sm text-navy hover:text-gray-400 disabled:text-gray-400 disabled:cursor-default'
-                disabled={disabled}
-              >
-                {name}
-              </button>
-            ))}
+            <LanguageSwitcher />
           </div>
           <div className='alignIcon'>
             {isLogin && userInfo ? (
